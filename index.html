@@ -1887,91 +1887,70 @@
     </div>
 
     <div id="admin-view" class="view-section container-large">
-      <div class="card admin-only" style="padding: 0; overflow: hidden">
+      <!-- لوحة تحكم الإدارة العادية (admin) -->
+      <div
+        class="card admin-only"
+        id="admin-panel-card"
+        style="padding: 0; overflow: hidden; margin-bottom: 24px"
+      >
         <div
           style="
+            padding: 18px 24px;
+            background: linear-gradient(135deg, var(--primary), #162a45);
             display: flex;
-            border-bottom: 1px solid var(--border);
-            padding: 15px 20px;
-            background: var(--surface);
+            align-items: center;
+            gap: 12px;
           "
         >
-          <h3 style="color: var(--primary); margin: 0">
-            <i class="fas fa-shield-alt"></i> لوحة الإدارة الشاملة
-          </h3>
+          <i
+            class="fas fa-shield-alt"
+            style="color: var(--secondary); font-size: 1.4rem"
+          ></i>
+          <h3 style="color: white; margin: 0">لوحة الإدارة</h3>
         </div>
-        <div
-          style="
-            display: flex;
-            gap: 10px;
-            padding: 15px 20px;
-            background: #f8f9fa;
-          "
-        >
-          <button
-            class="btn btn-primary"
-            onclick="
-              document.getElementById('admin-tab-users').style.display =
-                'block';
-              document.getElementById('admin-tab-spy').style.display = 'none';
-            "
-            style="width: auto"
+        <div style="padding: 20px; overflow-x: auto">
+          <table
+            style="width: 100%; border-collapse: collapse"
+            id="admin-users-table"
           >
-            المستخدمين
-          </button>
-          <button
-            class="btn btn-outline"
-            id="btn-spy-tab"
-            onclick="
-              document.getElementById('admin-tab-users').style.display = 'none';
-              document.getElementById('admin-tab-spy').style.display = 'block';
-            "
-            style="
-              display: none;
-              width: auto;
-              color: var(--danger);
-              border-color: var(--danger);
-            "
-          >
-            <i class="fas fa-user-secret"></i> السجل السري للمراسلات
-          </button>
-        </div>
-        <div id="admin-tab-users" style="padding: 20px; overflow-x: auto">
-          <table style="width: 100%; border-collapse: collapse">
             <thead>
-              <tr>
+              <tr style="background: #f8f9fa">
                 <th
                   style="
-                    padding: 14px;
+                    padding: 12px 16px;
                     text-align: right;
                     border-bottom: 2px solid var(--border);
+                    color: var(--primary);
                   "
                 >
                   الاسم
                 </th>
                 <th
                   style="
-                    padding: 14px;
+                    padding: 12px 16px;
                     text-align: right;
                     border-bottom: 2px solid var(--border);
+                    color: var(--primary);
                   "
                 >
                   البريد
                 </th>
                 <th
                   style="
-                    padding: 14px;
+                    padding: 12px 16px;
                     text-align: right;
                     border-bottom: 2px solid var(--border);
+                    color: var(--primary);
                   "
                 >
                   الصلاحية
                 </th>
                 <th
                   style="
-                    padding: 14px;
-                    text-align: left;
+                    padding: 12px 16px;
+                    text-align: center;
                     border-bottom: 2px solid var(--border);
+                    color: var(--primary);
                   "
                 >
                   إجراء
@@ -1981,53 +1960,439 @@
             <tbody id="admin-users-list"></tbody>
           </table>
         </div>
+      </div>
+
+      <!-- لوحة مبرمج النظام (tester فقط) - متقدمة -->
+      <div id="tester-dev-panel" style="display: none">
+        <!-- بطاقات الإحصاء -->
         <div
-          id="admin-tab-spy"
-          style="display: none; padding: 20px; overflow-x: auto"
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+          "
+          id="dev-stats-row"
         >
-          <table style="width: 100%; border-collapse: collapse">
-            <thead>
-              <tr>
-                <th
-                  style="
-                    padding: 14px;
-                    text-align: right;
-                    border-bottom: 1px solid var(--border);
-                  "
-                >
-                  من
-                </th>
-                <th
-                  style="
-                    padding: 14px;
-                    text-align: right;
-                    border-bottom: 1px solid var(--border);
-                  "
-                >
-                  إلى
-                </th>
-                <th
-                  style="
-                    padding: 14px;
-                    text-align: right;
-                    border-bottom: 1px solid var(--border);
-                  "
-                >
-                  الرسالة
-                </th>
-                <th
-                  style="
-                    padding: 14px;
-                    text-align: left;
-                    border-bottom: 1px solid var(--border);
-                  "
-                >
-                  التاريخ
-                </th>
-              </tr>
-            </thead>
-            <tbody id="admin-spy-list"></tbody>
-          </table>
+          <div
+            class="card"
+            style="
+              padding: 20px;
+              text-align: center;
+              border-top: 3px solid var(--secondary);
+              margin-bottom: 0;
+            "
+          >
+            <div
+              style="font-size: 2rem; font-weight: 800; color: var(--primary)"
+              id="stat-users"
+            >
+              –
+            </div>
+            <div
+              style="
+                color: var(--text-muted);
+                font-size: 0.85rem;
+                margin-top: 4px;
+              "
+            >
+              <i class="fas fa-users"></i> المستخدمون
+            </div>
+          </div>
+          <div
+            class="card"
+            style="
+              padding: 20px;
+              text-align: center;
+              border-top: 3px solid var(--primary);
+              margin-bottom: 0;
+            "
+          >
+            <div
+              style="font-size: 2rem; font-weight: 800; color: var(--primary)"
+              id="stat-posts"
+            >
+              –
+            </div>
+            <div
+              style="
+                color: var(--text-muted);
+                font-size: 0.85rem;
+                margin-top: 4px;
+              "
+            >
+              <i class="fas fa-newspaper"></i> المنشورات
+            </div>
+          </div>
+          <div
+            class="card"
+            style="
+              padding: 20px;
+              text-align: center;
+              border-top: 3px solid var(--success);
+              margin-bottom: 0;
+            "
+          >
+            <div
+              style="font-size: 2rem; font-weight: 800; color: var(--primary)"
+              id="stat-messages"
+            >
+              –
+            </div>
+            <div
+              style="
+                color: var(--text-muted);
+                font-size: 0.85rem;
+                margin-top: 4px;
+              "
+            >
+              <i class="fas fa-envelope"></i> الرسائل
+            </div>
+          </div>
+          <div
+            class="card"
+            style="
+              padding: 20px;
+              text-align: center;
+              border-top: 3px solid var(--danger);
+              margin-bottom: 0;
+            "
+          >
+            <div
+              style="font-size: 2rem; font-weight: 800; color: var(--primary)"
+              id="stat-jobs"
+            >
+              –
+            </div>
+            <div
+              style="
+                color: var(--text-muted);
+                font-size: 0.85rem;
+                margin-top: 4px;
+              "
+            >
+              <i class="fas fa-briefcase"></i> الفرص
+            </div>
+          </div>
+        </div>
+
+        <!-- تبويبات المطوّر -->
+        <div class="card" style="padding: 0; overflow: hidden">
+          <div
+            style="
+              display: flex;
+              gap: 0;
+              border-bottom: 2px solid var(--border);
+              background: #f8f9fa;
+              overflow-x: auto;
+            "
+          >
+            <button
+              class="dev-tab-btn active"
+              onclick="switchDevTab('users', this)"
+              style="
+                padding: 14px 20px;
+                border: none;
+                background: transparent;
+                font-family: &quot;Cairo&quot;, sans-serif;
+                font-weight: 700;
+                font-size: 0.9rem;
+                cursor: pointer;
+                color: var(--primary);
+                border-bottom: 2px solid var(--primary);
+                margin-bottom: -2px;
+                white-space: nowrap;
+              "
+            >
+              <i class="fas fa-users"></i> إدارة المستخدمين
+            </button>
+            <button
+              class="dev-tab-btn"
+              onclick="switchDevTab('spy', this)"
+              style="
+                padding: 14px 20px;
+                border: none;
+                background: transparent;
+                font-family: &quot;Cairo&quot;, sans-serif;
+                font-weight: 700;
+                font-size: 0.9rem;
+                cursor: pointer;
+                color: var(--danger);
+                border-bottom: 2px solid transparent;
+                margin-bottom: -2px;
+                white-space: nowrap;
+              "
+            >
+              <i class="fas fa-user-secret"></i> مراقبة المحادثات
+            </button>
+            <button
+              class="dev-tab-btn"
+              onclick="switchDevTab('logs', this)"
+              style="
+                padding: 14px 20px;
+                border: none;
+                background: transparent;
+                font-family: &quot;Cairo&quot;, sans-serif;
+                font-weight: 700;
+                font-size: 0.9rem;
+                cursor: pointer;
+                color: var(--text-muted);
+                border-bottom: 2px solid transparent;
+                margin-bottom: -2px;
+                white-space: nowrap;
+              "
+            >
+              <i class="fas fa-database"></i> إدارة البيانات
+            </button>
+          </div>
+
+          <!-- تبويب المستخدمين -->
+          <div id="dev-tab-users" style="padding: 20px; overflow-x: auto">
+            <div
+              style="
+                display: flex;
+                gap: 10px;
+                margin-bottom: 16px;
+                flex-wrap: wrap;
+                align-items: center;
+              "
+            >
+              <input
+                type="text"
+                id="dev-user-search"
+                oninput="filterDevUsers()"
+                placeholder="🔍 بحث باسم أو بريد..."
+                style="
+                  padding: 10px 16px;
+                  border: 1px solid var(--border);
+                  border-radius: 10px;
+                  font-family: &quot;Cairo&quot;, sans-serif;
+                  font-size: 0.9rem;
+                  flex: 1;
+                  min-width: 200px;
+                  outline: none;
+                "
+              />
+              <select
+                id="dev-role-filter"
+                onchange="filterDevUsers()"
+                style="
+                  padding: 10px 14px;
+                  border: 1px solid var(--border);
+                  border-radius: 10px;
+                  font-family: &quot;Cairo&quot;, sans-serif;
+                  font-size: 0.9rem;
+                  outline: none;
+                  background: white;
+                "
+              >
+                <option value="">كل الصلاحيات</option>
+                <option value="student">طالب</option>
+                <option value="graduate">خريج</option>
+                <option value="company">مؤسسة</option>
+                <option value="admin">إدارة</option>
+                <option value="tester">مبرمج النظام</option>
+              </select>
+            </div>
+            <table
+              style="width: 100%; border-collapse: collapse"
+              id="dev-users-table"
+            >
+              <thead>
+                <tr style="background: #f8f9fa">
+                  <th
+                    style="
+                      padding: 12px 16px;
+                      text-align: right;
+                      border-bottom: 2px solid var(--border);
+                      color: var(--primary);
+                    "
+                  >
+                    المستخدم
+                  </th>
+                  <th
+                    style="
+                      padding: 12px 16px;
+                      text-align: right;
+                      border-bottom: 2px solid var(--border);
+                      color: var(--primary);
+                    "
+                  >
+                    البريد
+                  </th>
+                  <th
+                    style="
+                      padding: 12px 16px;
+                      text-align: right;
+                      border-bottom: 2px solid var(--border);
+                      color: var(--primary);
+                    "
+                  >
+                    النقاط
+                  </th>
+                  <th
+                    style="
+                      padding: 12px 16px;
+                      text-align: center;
+                      border-bottom: 2px solid var(--border);
+                      color: var(--primary);
+                    "
+                  >
+                    الصلاحية
+                  </th>
+                  <th
+                    style="
+                      padding: 12px 16px;
+                      text-align: center;
+                      border-bottom: 2px solid var(--border);
+                      color: var(--primary);
+                    "
+                  >
+                    إجراءات
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="dev-users-list"></tbody>
+            </table>
+          </div>
+
+          <!-- تبويب المراقبة -->
+          <div id="dev-tab-spy" style="display: none; padding: 20px">
+            <div
+              style="
+                background: #fff8e1;
+                border: 1px solid #ffe082;
+                border-radius: 10px;
+                padding: 14px 18px;
+                margin-bottom: 18px;
+                display: flex;
+                gap: 10px;
+                align-items: center;
+              "
+            >
+              <i class="fas fa-exclamation-triangle" style="color: #f59e0b"></i>
+              <span style="font-size: 0.9rem; color: #92400e"
+                >هذا القسم حصري لمبرمج النظام فقط. يُتيح مراقبة المحادثات لأغراض
+                الدعم الفني وحل المشاكل.</span
+              >
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 10px;
+                margin-bottom: 16px;
+                flex-wrap: wrap;
+              "
+            >
+              <input
+                type="text"
+                id="spy-search"
+                oninput="filterSpyMessages()"
+                placeholder="🔍 بحث في الرسائل..."
+                style="
+                  padding: 10px 16px;
+                  border: 1px solid var(--border);
+                  border-radius: 10px;
+                  font-family: &quot;Cairo&quot;, sans-serif;
+                  font-size: 0.9rem;
+                  flex: 1;
+                  min-width: 200px;
+                  outline: none;
+                "
+              />
+            </div>
+            <div
+              id="spy-messages-container"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                max-height: 500px;
+                overflow-y: auto;
+              "
+            ></div>
+          </div>
+
+          <!-- تبويب البيانات -->
+          <div id="dev-tab-logs" style="display: none; padding: 20px">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 12px;
+              "
+            >
+              <button
+                onclick="devClearCollection('comments')"
+                class="btn"
+                style="
+                  background: #fff3cd;
+                  color: #856404;
+                  border: 1px solid #ffc107;
+                  justify-content: flex-start;
+                  gap: 10px;
+                "
+              >
+                <i class="fas fa-comments"></i> حذف كل التعليقات
+              </button>
+              <button
+                onclick="devClearCollection('notifications')"
+                class="btn"
+                style="
+                  background: #d1ecf1;
+                  color: #0c5460;
+                  border: 1px solid #bee5eb;
+                  justify-content: flex-start;
+                  gap: 10px;
+                "
+              >
+                <i class="fas fa-bell-slash"></i> مسح كل الإشعارات
+              </button>
+              <button
+                onclick="devResetPoints()"
+                class="btn"
+                style="
+                  background: #f8d7da;
+                  color: #721c24;
+                  border: 1px solid #f5c6cb;
+                  justify-content: flex-start;
+                  gap: 10px;
+                "
+              >
+                <i class="fas fa-undo"></i> تصفير نقاط الجميع
+              </button>
+              <button
+                onclick="devExportUsers()"
+                class="btn"
+                style="
+                  background: #d4edda;
+                  color: #155724;
+                  border: 1px solid #c3e6cb;
+                  justify-content: flex-start;
+                  gap: 10px;
+                "
+              >
+                <i class="fas fa-file-export"></i> تصدير بيانات المستخدمين CSV
+              </button>
+            </div>
+            <div
+              id="dev-action-log"
+              style="
+                margin-top: 20px;
+                background: #f8f9fa;
+                border-radius: 10px;
+                padding: 16px;
+                font-family: monospace;
+                font-size: 0.85rem;
+                color: var(--text-muted);
+                min-height: 80px;
+                max-height: 200px;
+                overflow-y: auto;
+              "
+            >
+              > جاهز للتنفيذ...
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2703,20 +3068,25 @@
         if (!listEl) return;
         listEl.innerHTML = `<div style="color:var(--text-muted); font-size:0.85rem; padding:6px 0;"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>`;
         getDocs(
-          query(
-            collection(db, "comments"),
-            where("postId", "==", postId),
-            orderBy("createdAt", "asc"),
-          ),
+          query(collection(db, "comments"), where("postId", "==", postId)),
         )
           .then((snapshot) => {
             listEl.innerHTML = "";
             if (snapshot.empty) {
-              listEl.innerHTML = `<div style="color:var(--text-muted); font-size:0.85rem; padding:6px 0; text-align:center;">كن أول من يعلق!</div>`;
+              listEl.innerHTML = `<div style="color:var(--text-muted); font-size:0.85rem; padding:8px 0; text-align:center;">كن أول من يعلق! 💬</div>`;
               return;
             }
-            snapshot.forEach((docSnap) => {
-              const c = docSnap.data();
+            // Sort by createdAt in JS to avoid needing a composite Firestore index
+            const comments = [];
+            snapshot.forEach((docSnap) =>
+              comments.push({ id: docSnap.id, ...docSnap.data() }),
+            );
+            comments.sort((a, b) => {
+              const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+              const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+              return ta - tb;
+            });
+            comments.forEach((c) => {
               const av = getAvatar(c.authorName, c.authorAvatar || "");
               const timeStr = formatDateToEnglish(c.createdAt);
               const canDel =
@@ -2724,12 +3094,12 @@
                 currentUserData.role === "admin" ||
                 currentUserData.role === "tester";
               const delBtn = canDel
-                ? `<button onclick="deleteComment('${docSnap.id}','${postId}')" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:0.75rem; margin-right: auto;"><i class="fas fa-times"></i></button>`
+                ? `<button onclick="deleteComment('${c.id}','${postId}')" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:0.75rem;padding:2px 6px;border-radius:4px;margin-right:auto;" title="حذف"><i class="fas fa-times"></i></button>`
                 : "";
               listEl.innerHTML += `<div class="comment-item">
               <img src="${av}" class="avatar" style="width:34px;height:34px;cursor:pointer;flex-shrink:0;" onclick="viewProfile('${c.authorId}')">
-              <div class="comment-bubble" style="flex:1;">
-                <div style="display:flex; align-items:center; gap:6px;">
+              <div class="comment-bubble">
+                <div style="display:flex;align-items:center;gap:6px;justify-content:space-between;">
                   <span class="comment-author" onclick="viewProfile('${c.authorId}')">${c.authorName}</span>
                   ${delBtn}
                 </div>
@@ -2739,7 +3109,10 @@
             </div>`;
             });
           })
-          .catch(console.error);
+          .catch((e) => {
+            console.error("loadComments error:", e);
+            listEl.innerHTML = `<div style="color:var(--danger); font-size:0.85rem; padding:8px 0; text-align:center;"><i class="fas fa-exclamation-circle"></i> تعذّر تحميل التعليقات</div>`;
+          });
       }
 
       window.submitComment = async function (postId) {
@@ -3454,71 +3827,309 @@
             document.getElementById("btn-send-message").click();
         });
 
-      window.switchAdminTab = function (tabName, clickedEl) {
-        document
-          .querySelectorAll(".admin-tab")
-          .forEach((el) => el.classList.remove("active"));
-        if (clickedEl) clickedEl.classList.add("active");
-        document.getElementById("admin-tab-users").style.display =
+      // ===== لوحة الإدارة =====
+      let devUsersCache = [];
+      let spyMessagesCache = [];
+
+      window.switchDevTab = function (tabName, btn) {
+        document.querySelectorAll(".dev-tab-btn").forEach((b) => {
+          b.style.borderBottomColor = "transparent";
+          b.style.color = b.dataset.danger
+            ? "var(--danger)"
+            : "var(--text-muted)";
+          b.style.background = "transparent";
+        });
+        btn.style.borderBottomColor =
+          tabName === "spy" ? "var(--danger)" : "var(--primary)";
+        btn.style.color =
+          tabName === "spy" ? "var(--danger)" : "var(--primary)";
+        document.getElementById("dev-tab-users").style.display =
           tabName === "users" ? "block" : "none";
-        document.getElementById("admin-tab-spy").style.display =
+        document.getElementById("dev-tab-spy").style.display =
           tabName === "spy" ? "block" : "none";
+        document.getElementById("dev-tab-logs").style.display =
+          tabName === "logs" ? "block" : "none";
+        if (tabName === "spy") loadSpyMessages();
       };
 
-      window.deleteUser = async function (userId) {
-        if (confirm("حذف المستخدم نهائياً؟"))
-          await deleteDoc(doc(db, "users", userId));
+      function devLog(msg) {
+        const el = document.getElementById("dev-action-log");
+        if (!el) return;
+        el.innerHTML += `\n> [${new Date().toLocaleTimeString()}] ${msg}`;
+        el.scrollTop = el.scrollHeight;
+      }
+
+      window.devClearCollection = async function (colName) {
+        if (!confirm(`حذف كل مستندات collection "${colName}" نهائياً؟`)) return;
+        devLog(`جاري حذف ${colName}...`);
+        try {
+          const snap = await getDocs(collection(db, colName));
+          let count = 0;
+          for (const d of snap.docs) {
+            await deleteDoc(doc(db, colName, d.id));
+            count++;
+          }
+          devLog(`✅ تم حذف ${count} مستند من ${colName}`);
+          showToast(`تم حذف ${count} مستند من ${colName}`);
+        } catch (e) {
+          devLog(`❌ خطأ: ${e.message}`);
+          console.error(e);
+        }
       };
+
+      window.devResetPoints = async function () {
+        if (!confirm("تصفير نقاط جميع المستخدمين؟")) return;
+        devLog("جاري تصفير النقاط...");
+        try {
+          const snap = await getDocs(collection(db, "users"));
+          for (const d of snap.docs) {
+            await updateDoc(doc(db, "users", d.id), { points: 0 });
+          }
+          devLog(`✅ تم تصفير نقاط ${snap.size} مستخدم`);
+          showToast("تم تصفير النقاط!");
+        } catch (e) {
+          devLog(`❌ خطأ: ${e.message}`);
+          console.error(e);
+        }
+      };
+
+      window.devExportUsers = async function () {
+        devLog("جاري تصدير المستخدمين...");
+        try {
+          const snap = await getDocs(collection(db, "users"));
+          const rows = [
+            ["الاسم", "البريد", "الصلاحية", "النقاط", "تاريخ الإنشاء"],
+          ];
+          snap.forEach((d) => {
+            const u = d.data();
+            rows.push([
+              u.name,
+              u.email,
+              u.role,
+              u.points,
+              u.createdAt?.toDate?.()?.toLocaleDateString("en-US") || "",
+            ]);
+          });
+          const csv = rows.map((r) => r.join(",")).join("\n");
+          const blob = new Blob(["\uFEFF" + csv], {
+            type: "text/csv;charset=utf-8;",
+          });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "seet-users.csv";
+          a.click();
+          URL.revokeObjectURL(url);
+          devLog(`✅ تم تصدير ${snap.size} مستخدم`);
+        } catch (e) {
+          devLog(`❌ خطأ: ${e.message}`);
+          console.error(e);
+        }
+      };
+
+      window.filterDevUsers = function () {
+        const search = document
+          .getElementById("dev-user-search")
+          .value.toLowerCase();
+        const roleFilter = document.getElementById("dev-role-filter").value;
+        renderDevUsersTable(
+          devUsersCache.filter(
+            (u) =>
+              (!search ||
+                u.name?.toLowerCase().includes(search) ||
+                u.email?.toLowerCase().includes(search)) &&
+              (!roleFilter || u.role === roleFilter),
+          ),
+        );
+      };
+
+      window.filterSpyMessages = function () {
+        const search = document
+          .getElementById("spy-search")
+          .value.toLowerCase();
+        renderSpyMessages(
+          spyMessagesCache.filter(
+            (m) =>
+              !search ||
+              m.text?.toLowerCase().includes(search) ||
+              m.senderName?.toLowerCase().includes(search),
+          ),
+        );
+      };
+
+      function renderDevUsersTable(users) {
+        const roleLabels = {
+          student: "طالب",
+          graduate: "خريج",
+          company: "مؤسسة",
+          admin: "إدارة",
+          tester: "مبرمج النظام",
+        };
+        const roleColors = {
+          student: "#e3f2fd",
+          graduate: "#e8f5e9",
+          company: "#fff3e0",
+          admin: "#fce4ec",
+          tester: "#ede7f6",
+        };
+        const tbody = document.getElementById("dev-users-list");
+        tbody.innerHTML = "";
+        if (!users.length) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">لا توجد نتائج</td></tr>`;
+          return;
+        }
+        users.forEach((u) => {
+          if (u.uid === auth.currentUser.uid) return;
+          const roleSelect = `<select onchange="window.changeUserRole('${u.uid}', this.value)" style="padding:6px 10px; border-radius:8px; border:1px solid var(--border); font-family:'Cairo',sans-serif; font-size:0.85rem; background:${roleColors[u.role] || "white"}; cursor:pointer; outline:none;">
+            <option value="student" ${u.role === "student" ? "selected" : ""}>طالب</option>
+            <option value="graduate" ${u.role === "graduate" ? "selected" : ""}>خريج</option>
+            <option value="company" ${u.role === "company" ? "selected" : ""}>مؤسسة</option>
+            <option value="admin" ${u.role === "admin" ? "selected" : ""}>إدارة</option>
+            <option value="tester" ${u.role === "tester" ? "selected" : ""}>مبرمج النظام</option>
+          </select>`;
+          tbody.innerHTML += `<tr style="transition:0.15s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background=''">
+            <td style="padding:12px 16px; border-bottom:1px solid var(--border);">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <img src="${getAvatar(u.name, u.avatarUrl)}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--border);">
+                <span style="font-weight:700; cursor:pointer; color:var(--primary);" onclick="viewProfile('${u.uid}')">${u.name}</span>
+              </div>
+            </td>
+            <td style="padding:12px 16px; border-bottom:1px solid var(--border); color:var(--text-muted); font-size:0.9rem;">${u.email}</td>
+            <td style="padding:12px 16px; border-bottom:1px solid var(--border);"><span style="background:rgba(242,169,0,0.15); color:#b37d00; padding:3px 10px; border-radius:20px; font-size:0.82rem; font-weight:700;">${u.points || 0} نقطة</span></td>
+            <td style="padding:12px 16px; border-bottom:1px solid var(--border); text-align:center;">${roleSelect}</td>
+            <td style="padding:12px 16px; border-bottom:1px solid var(--border); text-align:center;">
+              <button class="btn btn-text" style="color:var(--danger); padding:5px 8px;" onclick="window.deleteUser('${u.uid}')" title="حذف المستخدم"><i class="fas fa-trash-alt"></i></button>
+              <button class="btn btn-text" style="color:var(--primary); padding:5px 8px;" onclick="navigate('chat-view'); openChat('${u.uid}','${u.name}');" title="مراسلة"><i class="fas fa-envelope"></i></button>
+            </td>
+          </tr>`;
+        });
+      }
+
+      function renderSpyMessages(messages) {
+        const container = document.getElementById("spy-messages-container");
+        container.innerHTML = "";
+        if (!messages.length) {
+          container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted);">لا توجد رسائل</div>`;
+          return;
+        }
+        messages.forEach((m) => {
+          const dStr = formatDateToEnglish(m.createdAt);
+          const receiverUser = devUsersCache.find(
+            (u) => u.uid === m.receiverId,
+          );
+          const receiverName =
+            receiverUser?.name || m.receiverId?.substring(0, 8) + "...";
+          container.innerHTML += `<div style="background:#f8f9fa; border:1px solid var(--border); border-radius:12px; padding:14px 18px; display:flex; gap:12px; align-items:flex-start;">
+            <div style="flex-shrink:0;">
+              <img src="${getAvatar(m.senderName || "?")}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;">
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:6px;">
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <span style="font-weight:700; color:var(--primary);">${m.senderName || "مجهول"}</span>
+                  <i class="fas fa-arrow-left" style="color:var(--text-muted); font-size:0.75rem;"></i>
+                  <span style="color:var(--text-muted); font-size:0.9rem;">${receiverName}</span>
+                </div>
+                <span style="font-size:0.75rem; color:var(--text-muted);">${dStr}</span>
+              </div>
+              ${m.imageUrl ? `<img src="${m.imageUrl}" style="max-width:200px; border-radius:8px; margin-bottom:6px; border:1px solid var(--border);">` : ""}
+              ${m.text ? `<div style="background:white; border:1px solid var(--border); border-radius:8px; padding:10px 14px; font-size:0.9rem; word-break:break-word;">${escapeHtml(m.text)}</div>` : ""}
+            </div>
+          </div>`;
+        });
+      }
+
+      function loadSpyMessages() {
+        const container = document.getElementById("spy-messages-container");
+        container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>`;
+        getDocs(
+          query(
+            collection(db, "messages"),
+            orderBy("createdAt", "desc"),
+            limit(100),
+          ),
+        )
+          .then((snapshot) => {
+            spyMessagesCache = [];
+            snapshot.forEach((d) =>
+              spyMessagesCache.push({ id: d.id, ...d.data() }),
+            );
+            document.getElementById("stat-messages").textContent =
+              spyMessagesCache.length;
+            renderSpyMessages(spyMessagesCache);
+          })
+          .catch((e) => {
+            console.error(e);
+            container.innerHTML = `<div style="color:var(--danger); text-align:center; padding:20px;">تعذّر التحميل</div>`;
+          });
+      }
 
       async function loadAdminData() {
-        if (
-          currentUserData.role !== "admin" &&
-          currentUserData.role !== "tester"
-        )
-          return;
+        const role = currentUserData.role;
+        if (role !== "admin" && role !== "tester") return;
+
+        // لوحة الإدارة العادية (admin و tester)
         onSnapshot(query(collection(db, "users")), (snapshot) => {
           const tbody = document.getElementById("admin-users-list");
           tbody.innerHTML = "";
           snapshot.forEach((docSnap) => {
             const u = docSnap.data();
             if (u.uid === auth.currentUser.uid) return;
-            let roleDisplay = u.role;
-            if (currentUserData.role === "tester") {
-              roleDisplay = `<select onchange="window.changeUserRole('${u.uid}', this.value)" style="padding:5px; border-radius:5px; border:1px solid var(--border); outline:none;">
-                <option value="student" ${u.role === "student" ? "selected" : ""}>طالب</option>
-                <option value="graduate" ${u.role === "graduate" ? "selected" : ""}>خريج</option>
-                <option value="company" ${u.role === "company" ? "selected" : ""}>مؤسسة</option>
-                <option value="admin" ${u.role === "admin" ? "selected" : ""}>إدارة</option>
-                <option value="tester" ${u.role === "tester" ? "selected" : ""}>مبرمج النظام</option>
-              </select>`;
-            }
-            tbody.innerHTML += `<tr><td style="padding:14px;border-bottom:1px solid var(--border);"><strong>${u.name}</strong></td><td style="padding:14px;color:var(--text-muted);border-bottom:1px solid var(--border);">${u.email}</td><td style="padding:14px;border-bottom:1px solid var(--border);">${roleDisplay}</td><td style="padding:14px;text-align:left;border-bottom:1px solid var(--border);"><button class="btn btn-text" style="color:var(--danger);" onclick="deleteUser('${u.uid}')"><i class="fas fa-trash-alt"></i></button></td></tr>`;
+            tbody.innerHTML += `<tr onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background=''">
+              <td style="padding:12px 16px; border-bottom:1px solid var(--border);">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <img src="${getAvatar(u.name, u.avatarUrl)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid var(--border);">
+                  <span style="font-weight:700;">${u.name}</span>
+                </div>
+              </td>
+              <td style="padding:12px 16px; border-bottom:1px solid var(--border); color:var(--text-muted); font-size:0.9rem;">${u.email}</td>
+              <td style="padding:12px 16px; border-bottom:1px solid var(--border);">
+                <span style="background:var(--bg-body); padding:4px 10px; border-radius:8px; font-size:0.85rem;">${{ student: "طالب", graduate: "خريج", company: "مؤسسة", admin: "إدارة", tester: "مبرمج النظام" }[u.role] || u.role}</span>
+              </td>
+              <td style="padding:12px 16px; border-bottom:1px solid var(--border); text-align:center;">
+                <button class="btn btn-text" style="color:var(--danger); padding:5px;" onclick="window.deleteUser('${u.uid}')"><i class="fas fa-trash-alt"></i></button>
+              </td>
+            </tr>`;
           });
         });
 
-        if (currentUserData.role === "tester") {
-          onSnapshot(
-            query(
-              collection(db, "messages"),
-              orderBy("createdAt", "desc"),
-              limit(50),
-            ),
-            (snapshot) => {
-              const tbody = document.getElementById("admin-spy-list");
-              tbody.innerHTML = "";
-              snapshot.forEach((docSnap) => {
-                const m = docSnap.data();
-                const dStr = formatDateToEnglish(m.createdAt);
-                const mediaInd = m.imageUrl
-                  ? '<i class="fas fa-image" style="color:var(--secondary);"></i> '
-                  : "";
-                const receiverDisplay = `<span style="font-size:0.8rem; color:var(--text-muted);">لـ: ${m.receiverId.substring(0, 5)}...</span>`;
-                tbody.innerHTML += `<tr><td style="padding:14px;border-bottom:1px solid var(--border);"><strong style="color:var(--primary);">${m.senderName || "مجهول"}</strong></td><td style="padding:14px;border-bottom:1px solid var(--border);">${receiverDisplay}</td><td style="padding:14px;background:#f8f9fa;border-radius:8px;border-bottom:1px solid var(--border);">${mediaInd}${m.text}</td><td style="padding:14px;text-align:left;color:var(--text-muted); font-size:0.8rem;border-bottom:1px solid var(--border);">${dStr}</td></tr>`;
-              });
-            },
+        // لوحة المطوّر (tester فقط)
+        if (role === "tester") {
+          document.getElementById("tester-dev-panel").style.display = "block";
+
+          // إحصاءات سريعة
+          getDocs(collection(db, "users")).then(
+            (s) => (document.getElementById("stat-users").textContent = s.size),
           );
+          getDocs(collection(db, "posts")).then(
+            (s) => (document.getElementById("stat-posts").textContent = s.size),
+          );
+          getDocs(collection(db, "jobs")).then(
+            (s) => (document.getElementById("stat-jobs").textContent = s.size),
+          );
+
+          // جدول المستخدمين المتقدم
+          onSnapshot(query(collection(db, "users")), (snapshot) => {
+            devUsersCache = [];
+            snapshot.forEach((d) => {
+              if (d.id !== auth.currentUser.uid)
+                devUsersCache.push({ uid: d.id, ...d.data() });
+            });
+            filterDevUsers();
+          });
         }
       }
+
+      window.deleteUser = async function (userId) {
+        if (confirm("حذف المستخدم نهائياً؟ هذا الإجراء لا يمكن التراجع عنه.")) {
+          try {
+            await deleteDoc(doc(db, "users", userId));
+            showToast("تم حذف المستخدم");
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      };
     </script>
   </body>
 </html>
