@@ -19,7 +19,6 @@
       @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap");
 
       :root {
-        /* ألوان الشعار */
         --primary: #203b5f;
         --primary-hover: #162a45;
         --secondary: #f2a900;
@@ -50,7 +49,6 @@
         overflow-x: hidden;
       }
 
-      /* شريط التنقل */
       nav {
         background: var(--surface);
         padding: 0 5%;
@@ -170,7 +168,6 @@
         font-weight: bold;
       }
 
-      /* الحاويات */
       .container {
         max-width: 750px;
         margin: 30px auto;
@@ -197,7 +194,6 @@
         transition: var(--transition);
       }
 
-      /* المدخلات والأزرار */
       .input-group {
         margin-bottom: 18px;
       }
@@ -338,7 +334,6 @@
         pointer-events: none;
       }
 
-      /* تنسيقات أقسام البروفايل (لينكد إن ستايل) */
       .profile-section {
         background: #f8f9fa;
         padding: 20px;
@@ -408,7 +403,6 @@
         font-size: 0.85rem;
       }
 
-      /* لوحة تحكم مبرمج النظام */
       #tester-widget {
         position: fixed;
         bottom: 20px;
@@ -440,7 +434,6 @@
         background: #fff;
       }
 
-      /* قوائم المستخدمين */
       .users-list-container {
         max-height: 500px;
         overflow-y: auto;
@@ -470,7 +463,6 @@
         box-shadow: 0 0 8px rgba(229, 57, 53, 0.6);
       }
 
-      /* المنشورات */
       .post-input-wrapper textarea {
         width: 100%;
         border: 1px solid var(--border);
@@ -547,7 +539,6 @@
         font-size: 0.95rem;
       }
 
-      /* الدردشة */
       .chat-layout {
         display: flex;
         height: 82vh;
@@ -774,6 +765,185 @@
         animation: fadeIn 0.4s ease-out;
       }
 
+      /* تعليقات البوستات */
+      .post-actions {
+        display: flex;
+        gap: 5px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+        margin-top: 12px;
+      }
+      .post-action-btn {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        font-weight: 700;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-family: "Cairo", sans-serif;
+      }
+      .post-action-btn:hover {
+        background: var(--bg-body);
+        color: var(--primary);
+      }
+      .post-action-btn.liked {
+        color: var(--danger);
+      }
+      .comments-section {
+        margin-top: 12px;
+        border-top: 1px solid var(--border);
+        padding-top: 12px;
+        display: none;
+      }
+      .comments-section.open {
+        display: block;
+      }
+      .comment-item {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 12px;
+        align-items: flex-start;
+      }
+      .comment-bubble {
+        background: var(--bg-body);
+        border-radius: 12px;
+        padding: 10px 14px;
+        flex: 1;
+      }
+      .comment-bubble .comment-author {
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 0.88rem;
+        cursor: pointer;
+        margin-bottom: 2px;
+      }
+      .comment-bubble .comment-text {
+        font-size: 0.92rem;
+        color: var(--text-main);
+        line-height: 1.5;
+      }
+      .comment-bubble .comment-time {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+      .comment-input-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 8px;
+      }
+      .comment-input-row input {
+        flex: 1;
+        background: var(--bg-body);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        outline: none;
+        transition: var(--transition);
+        font-family: "Cairo", sans-serif;
+      }
+      .comment-input-row input:focus {
+        border-color: var(--secondary);
+        background: white;
+      }
+      .comment-send-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        flex-shrink: 0;
+      }
+      .comment-send-btn:hover {
+        background: var(--primary-hover);
+        transform: scale(1.05);
+      }
+
+      /* تحسين شكل الإشعارات */
+      .notif-dropdown {
+        display: none !important;
+      }
+      .notif-dropdown.show {
+        display: flex !important;
+      }
+
+      /* تحسين Toast */
+      .toast {
+        cursor: default;
+      }
+      .toast.info {
+        cursor: pointer;
+      }
+
+      /* Skeleton loading */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          #f0f2f5 25%,
+          #e4e6eb 50%,
+          #f0f2f5 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite;
+        border-radius: 8px;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+
+      /* تحسين أزرار */
+      .btn-success {
+        background: var(--success);
+        color: white;
+        border: none;
+      }
+      .btn-success:hover:not(:disabled) {
+        background: #008a00;
+        transform: translateY(-1px);
+      }
+
+      /* تحسين شكل البروفايل */
+      .profile-stats {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+        margin: 12px 0;
+      }
+      .profile-stat {
+        text-align: center;
+      }
+      .profile-stat .stat-number {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--primary);
+        display: block;
+      }
+      .profile-stat .stat-label {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -795,16 +965,14 @@
         }
       }
 
-      /* شاشات الجوال - شريط التنقل السفلي */
       @media (max-width: 768px) {
         body {
-          /* إضافة مساحة سفلية حتى لا يغطي شريط التنقل المحتوى */
           padding-bottom: 80px;
         }
         nav {
           padding: 0 15px;
         }
-        /* تحويل الروابط إلى شريط سفلي ثابت (Facebook Style) */
+
         .nav-links {
           position: fixed;
           bottom: 0;
@@ -837,14 +1005,14 @@
 
         .notif-dropdown {
           top: auto;
-          bottom: 75px; /* يفتح لأعلى في الجوال */
+          bottom: 75px;
           left: 5%;
           width: 90%;
         }
 
         #tester-widget,
         #toast-container {
-          bottom: 85px; /* رفعهما فوق الشريط السفلي */
+          bottom: 85px;
         }
         #tester-widget {
           width: 90%;
@@ -1891,6 +2059,7 @@
         deleteDoc,
         limit,
         arrayUnion,
+        arrayRemove,
       } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -1920,6 +2089,8 @@
       let allUsersCache = [];
       let unreadSendersSet = new Set();
       let cropperInstance = null;
+      let unreadListener = null;
+      let postsUnsubscribe = null;
 
       function formatDateToEnglish(timestamp) {
         if (!timestamp) return "Just now";
@@ -2005,20 +2176,16 @@
       }
 
       async function uploadImageToImgBB(file) {
-        try {
-          const compressedFile = await compressImage(file);
-          const formData = new FormData();
-          formData.append("image", compressedFile);
-          const res = await fetch(
-            `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
-            { method: "POST", body: formData },
-          );
-          const data = await res.json();
-          if (data.success) return data.data.url;
-          throw new Error("Upload Failed");
-        } catch (e) {
-          throw e;
-        }
+        const compressedFile = await compressImage(file);
+        const formData = new FormData();
+        formData.append("image", compressedFile);
+        const res = await fetch(
+          `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
+          { method: "POST", body: formData },
+        );
+        const data = await res.json();
+        if (data.success) return data.data.url;
+        throw new Error("Upload Failed");
       }
 
       async function sendNotification(userId, message) {
@@ -2053,7 +2220,7 @@
           document.getElementById("link-admin").classList.add("active");
           loadAdminData();
         }
-        document.getElementById("notif-dropdown").style.display = "none";
+        document.getElementById("notif-dropdown").classList.remove("show");
         window.scrollTo({ top: 0, behavior: "smooth" });
       };
 
@@ -2064,24 +2231,30 @@
       document.getElementById("btn-notifications").onclick = async (e) => {
         e.stopPropagation();
         const dropdown = document.getElementById("notif-dropdown");
-        dropdown.style.display =
-          dropdown.style.display === "flex" ? "none" : "flex";
-        if (dropdown.style.display === "flex") {
-          const unreadQ = await getDocs(
-            query(
-              collection(db, "notifications"),
-              where("userId", "==", auth.currentUser.uid),
-              where("isRead", "==", false),
-            ),
-          );
-          unreadQ.forEach((d) => {
-            updateDoc(doc(db, "notifications", d.id), { isRead: true });
-          });
+        const isOpen = dropdown.classList.contains("show");
+        dropdown.classList.toggle("show");
+        if (!isOpen) {
+          try {
+            const unreadQ = await getDocs(
+              query(
+                collection(db, "notifications"),
+                where("userId", "==", auth.currentUser.uid),
+                where("isRead", "==", false),
+              ),
+            );
+            unreadQ.forEach((d) => {
+              updateDoc(doc(db, "notifications", d.id), { isRead: true }).catch(
+                console.error,
+              );
+            });
+          } catch (e) {
+            console.error(e);
+          }
         }
       };
       document.addEventListener("click", (e) => {
         if (!e.target.closest("#btn-notifications"))
-          document.getElementById("notif-dropdown").style.display = "none";
+          document.getElementById("notif-dropdown").classList.remove("show");
       });
 
       window.switchTesterRole = function (role) {
@@ -2231,6 +2404,24 @@
             )
               loadApplications();
 
+            // تسجيل الاستماع للبوستات بعد التحقق من المستخدم
+            if (postsUnsubscribe) postsUnsubscribe();
+            postsUnsubscribe = onSnapshot(
+              query(collection(db, "posts"), orderBy("createdAt", "desc")),
+              (snapshot) => {
+                const feed = document.getElementById("feed-container");
+                feed.innerHTML = "";
+                if (snapshot.empty) {
+                  feed.innerHTML =
+                    '<div style="text-align:center; padding:40px; color:var(--text-muted);">لا توجد منشورات حتى الآن. كن المبادِر!</div>';
+                  return;
+                }
+                snapshot.forEach((docSnap) => {
+                  feed.innerHTML += renderPost(docSnap);
+                });
+              },
+            );
+
             if (unreadListener) unreadListener();
             unreadListener = onSnapshot(
               query(
@@ -2302,6 +2493,7 @@
           document.getElementById("tester-widget").style.display = "none";
           if (unreadListener) unreadListener();
           if (notifUnsubscribe) notifUnsubscribe();
+          if (postsUnsubscribe) postsUnsubscribe();
           navigate("auth-view");
         }
       });
@@ -2353,7 +2545,6 @@
         });
       }
 
-      // --- المنشورات ---
       document
         .getElementById("post-image-input")
         .addEventListener("change", function (e) {
@@ -2381,14 +2572,22 @@
 
         try {
           let imageUrl = "";
-          if (fileInput.files.length > 0)
-            imageUrl = await uploadImageToImgBB(fileInput.files[0]);
+          if (fileInput.files.length > 0) {
+            try {
+              imageUrl = await uploadImageToImgBB(fileInput.files[0]);
+            } catch (imgErr) {
+              console.error("Image upload failed:", imgErr);
+              showToast("تعذّر رفع الصورة، سيتم النشر بدونها.", "info");
+            }
+          }
           await addDoc(collection(db, "posts"), {
             authorId: auth.currentUser.uid,
             authorName: currentUserData.name,
             authorAvatar: currentUserData.avatarUrl || "",
             content: content,
             imageUrl: imageUrl,
+            likes: [],
+            commentCount: 0,
             createdAt: serverTimestamp(),
           });
           await updateDoc(doc(db, "users", auth.currentUser.uid), {
@@ -2404,46 +2603,192 @@
             "var(--text-muted)";
           showToast("تم النشر بنجاح! +10 نقاط");
         } catch (e) {
+          console.error(e);
           showToast("حدث خطأ أثناء النشر", "info");
         }
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-paper-plane"></i> نشر';
       };
 
-      onSnapshot(
-        query(collection(db, "posts"), orderBy("createdAt", "desc")),
-        (snapshot) => {
-          const feed = document.getElementById("feed-container");
-          feed.innerHTML = "";
-          if (snapshot.empty) {
-            feed.innerHTML =
-              '<div style="text-align:center; padding:40px; color:var(--text-muted);">لا توجد منشورات حتى الآن. كن المبادِر!</div>';
-            return;
+      function renderPost(docSnap) {
+        const p = docSnap.data();
+        const postId = docSnap.id;
+        const dateStr = formatDateToEnglish(p.createdAt);
+        const myUid = auth.currentUser.uid;
+        const canDelete =
+          p.authorId === myUid ||
+          currentUserData.role === "admin" ||
+          currentUserData.role === "tester";
+        const deleteBtn = canDelete
+          ? `<button class="btn btn-text" style="color:var(--danger); padding:4px;" onclick="deletePost('${postId}')"><i class="fas fa-trash"></i></button>`
+          : "";
+        const imgHtml = p.imageUrl
+          ? `<img src="${p.imageUrl}" class="post-image" onclick="window.open('${p.imageUrl}','_blank')" style="cursor:pointer;">`
+          : "";
+        const postAvatar = getAvatar(p.authorName, p.authorAvatar);
+        const likes = p.likes || [];
+        const likeCount = likes.length;
+        const isLiked = likes.includes(myUid);
+        const commentCount = p.commentCount || 0;
+
+        return `<div class="card" id="post-${postId}" style="margin-bottom:15px; padding:20px; border-top: 2px solid var(--border);">
+          <div class="post-header">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <img src="${postAvatar}" class="avatar" onclick="viewProfile('${p.authorId}')" style="cursor:pointer;">
+              <div>
+                <h4 onclick="viewProfile('${p.authorId}')" style="margin:0; cursor:pointer; color:var(--primary); font-size:1.05rem;">${p.authorName}</h4>
+                <small style="color:var(--text-muted);">${dateStr}</small>
+              </div>
+            </div>
+            ${deleteBtn}
+          </div>
+          <div class="post-content">${escapeHtml(p.content)}</div>
+          ${imgHtml}
+          <div class="post-actions">
+            <button class="post-action-btn ${isLiked ? "liked" : ""}" onclick="toggleLike('${postId}', ${isLiked})">
+              <i class="fa${isLiked ? "s" : "r"} fa-heart"></i> ${likeCount > 0 ? likeCount : ""} إعجاب
+            </button>
+            <button class="post-action-btn" onclick="toggleComments('${postId}')">
+              <i class="far fa-comment"></i> ${commentCount > 0 ? commentCount : ""} تعليق
+            </button>
+          </div>
+          <div class="comments-section" id="comments-${postId}">
+            <div id="comments-list-${postId}" style="margin-bottom:8px;"></div>
+            <div class="comment-input-row">
+              <img src="${getAvatar(currentUserData.name, currentUserData.avatarUrl)}" class="avatar" style="width:34px; height:34px; flex-shrink:0;">
+              <input type="text" id="comment-input-${postId}" placeholder="اكتب تعليقاً..." onkeypress="if(event.key==='Enter') submitComment('${postId}')">
+              <button class="comment-send-btn" onclick="submitComment('${postId}')"><i class="fas fa-paper-plane" style="font-size:0.8rem;"></i></button>
+            </div>
+          </div>
+        </div>`;
+      }
+
+      function escapeHtml(str) {
+        if (!str) return "";
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/\n/g, "<br>");
+      }
+
+      window.toggleLike = async function (postId, isLiked) {
+        try {
+          const myUid = auth.currentUser.uid;
+          const postRef = doc(db, "posts", postId);
+          if (isLiked) {
+            await updateDoc(postRef, { likes: arrayRemove(myUid) });
+          } else {
+            await updateDoc(postRef, { likes: arrayUnion(myUid) });
           }
-          snapshot.forEach((docSnap) => {
-            const p = docSnap.data();
-            const dateStr = formatDateToEnglish(p.createdAt);
-            const canDelete =
-              (auth.currentUser && p.authorId === auth.currentUser.uid) ||
-              currentUserData.role === "admin" ||
-              currentUserData.role === "tester";
-            const deleteBtn = canDelete
-              ? `<button class="btn btn-text" style="color:var(--danger); padding:4px;" onclick="deletePost('${docSnap.id}')"><i class="fas fa-trash"></i></button>`
-              : "";
-            const imgHtml = p.imageUrl
-              ? `<img src="${p.imageUrl}" class="post-image">`
-              : "";
-            const postAvatar = getAvatar(p.authorName, p.authorAvatar);
-            feed.innerHTML += `<div class="card" style="margin-bottom:15px; padding:20px; border-top: 2px solid var(--border);"><div class="post-header"><div style="display:flex; gap:12px; align-items:center;"><img src="${postAvatar}" class="avatar" onclick="viewProfile('${p.authorId}')"><div><h4 onclick="viewProfile('${p.authorId}')" style="margin:0; cursor:pointer; color:var(--primary); font-size:1.05rem;">${p.authorName}</h4><small style="color:var(--text-muted);">${dateStr}</small></div></div>${deleteBtn}</div><div class="post-content">${p.content}</div>${imgHtml}</div>`;
-          });
-        },
-      );
-      window.deletePost = async function (postId) {
-        if (confirm("هل أنت متأكد من حذف المنشور؟"))
-          await deleteDoc(doc(db, "posts", postId));
+        } catch (e) {
+          console.error(e);
+        }
       };
 
-      // --- ✂️ قص الصورة ---
+      window.toggleComments = function (postId) {
+        const section = document.getElementById(`comments-${postId}`);
+        const isOpen = section.classList.contains("open");
+        if (!isOpen) {
+          section.classList.add("open");
+          loadComments(postId);
+        } else {
+          section.classList.remove("open");
+        }
+      };
+
+      function loadComments(postId) {
+        const listEl = document.getElementById(`comments-list-${postId}`);
+        if (!listEl) return;
+        listEl.innerHTML = `<div style="color:var(--text-muted); font-size:0.85rem; padding:6px 0;"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>`;
+        getDocs(
+          query(
+            collection(db, "comments"),
+            where("postId", "==", postId),
+            orderBy("createdAt", "asc"),
+          ),
+        )
+          .then((snapshot) => {
+            listEl.innerHTML = "";
+            if (snapshot.empty) {
+              listEl.innerHTML = `<div style="color:var(--text-muted); font-size:0.85rem; padding:6px 0; text-align:center;">كن أول من يعلق!</div>`;
+              return;
+            }
+            snapshot.forEach((docSnap) => {
+              const c = docSnap.data();
+              const av = getAvatar(c.authorName, c.authorAvatar || "");
+              const timeStr = formatDateToEnglish(c.createdAt);
+              const canDel =
+                c.authorId === auth.currentUser.uid ||
+                currentUserData.role === "admin" ||
+                currentUserData.role === "tester";
+              const delBtn = canDel
+                ? `<button onclick="deleteComment('${docSnap.id}','${postId}')" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:0.75rem; margin-right: auto;"><i class="fas fa-times"></i></button>`
+                : "";
+              listEl.innerHTML += `<div class="comment-item">
+              <img src="${av}" class="avatar" style="width:34px;height:34px;cursor:pointer;flex-shrink:0;" onclick="viewProfile('${c.authorId}')">
+              <div class="comment-bubble" style="flex:1;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span class="comment-author" onclick="viewProfile('${c.authorId}')">${c.authorName}</span>
+                  ${delBtn}
+                </div>
+                <div class="comment-text">${escapeHtml(c.text)}</div>
+                <div class="comment-time">${timeStr}</div>
+              </div>
+            </div>`;
+            });
+          })
+          .catch(console.error);
+      }
+
+      window.submitComment = async function (postId) {
+        const input = document.getElementById(`comment-input-${postId}`);
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = "";
+        try {
+          await addDoc(collection(db, "comments"), {
+            postId: postId,
+            authorId: auth.currentUser.uid,
+            authorName: currentUserData.name,
+            authorAvatar: currentUserData.avatarUrl || "",
+            text: text,
+            createdAt: serverTimestamp(),
+          });
+          await updateDoc(doc(db, "posts", postId), {
+            commentCount: increment(1),
+          });
+          loadComments(postId);
+        } catch (e) {
+          console.error(e);
+          showToast("تعذّر إرسال التعليق", "info");
+        }
+      };
+
+      window.deleteComment = async function (commentId, postId) {
+        if (!confirm("حذف التعليق؟")) return;
+        try {
+          await deleteDoc(doc(db, "comments", commentId));
+          await updateDoc(doc(db, "posts", postId), {
+            commentCount: increment(-1),
+          });
+          loadComments(postId);
+        } catch (e) {
+          console.error(e);
+        }
+      };
+
+      window.deletePost = async function (postId) {
+        if (confirm("هل أنت متأكد من حذف المنشور؟")) {
+          try {
+            await deleteDoc(doc(db, "posts", postId));
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      };
+
       document.getElementById("profile-avatar").onclick = () => {
         if (currentProfileViewId === auth.currentUser.uid)
           document.getElementById("profile-image-input").click();
@@ -2513,7 +2858,6 @@
         );
       };
 
-      // --- الفرص ---
       document.getElementById("btn-publish-job").onclick = async () => {
         const title = document.getElementById("job-title").value,
           desc = document.getElementById("job-desc").value,
@@ -2535,7 +2879,9 @@
           document.getElementById("job-desc").value = "";
           document.getElementById("job-deadline").value = "";
           showToast("تم نشر الفرصة بنجاح!");
-        } catch (e) {}
+        } catch (e) {
+          console.error(e);
+        }
         btn.disabled = false;
       };
       function loadJobs() {
@@ -2630,7 +2976,6 @@
         );
       }
 
-      // --- الفعاليات ---
       document.getElementById("btn-publish-event").onclick = async () => {
         const title = document.getElementById("event-title").value,
           date = document.getElementById("event-date").value,
@@ -2654,7 +2999,9 @@
           document.getElementById("event-loc").value = "";
           document.getElementById("event-desc").value = "";
           showToast("تم نشر الفعالية!");
-        } catch (e) {}
+        } catch (e) {
+          console.error(e);
+        }
       };
       function loadEvents() {
         onSnapshot(
@@ -2704,22 +3051,19 @@
             );
             showToast("تم تسجيل حضورك!");
           } else {
-            const evSnap = await getDoc(doc(db, "events", eventId));
-            const newAttendees = evSnap
-              .data()
-              .attendees.filter((id) => id !== auth.currentUser.uid);
             await updateDoc(doc(db, "events", eventId), {
-              attendees: newAttendees,
+              attendees: arrayRemove(auth.currentUser.uid),
             });
             showToast("تم إلغاء الحضور.", "info");
           }
-        } catch (e) {}
+        } catch (e) {
+          console.error(e);
+        }
       };
       window.deleteEvent = async function (id) {
         if (confirm("حذف الفعالية؟")) await deleteDoc(doc(db, "events", id));
       };
 
-      // --- المتابعة والبروفايل ---
       window.toggleFollow = async function () {
         const targetId = currentProfileViewId;
         const myId = auth.currentUser.uid;
@@ -2746,7 +3090,9 @@
             });
             showToast("تم إلغاء المتابعة.", "info");
           }
-        } catch (e) {}
+        } catch (e) {
+          console.error(e);
+        }
         btn.disabled = false;
       };
 
@@ -2778,7 +3124,6 @@
             roles[data.role] || data.role;
           document.getElementById("profile-points").innerText = data.points;
 
-          // عرض الأقسام الجديدة
           document.getElementById("profile-bio-display").innerText =
             data.bio || "لا توجد نبذة مسجلة.";
           document.getElementById("profile-experience-display").innerText =
@@ -2786,7 +3131,6 @@
           document.getElementById("profile-education-display").innerText =
             data.education || "لا توجد بيانات تعليم مسجلة.";
 
-          // عرض المهارات كـ Tags
           const skillsContainer = document.getElementById(
             "profile-skills-display",
           );
@@ -2846,7 +3190,6 @@
             document.getElementById("btn-add-portfolio").style.display =
               "inline-block";
 
-            // تعبئة حقول التعديل
             document.getElementById("profile-bio-input").value = data.bio || "";
             document.getElementById("profile-experience-input").value =
               data.experience || "";
@@ -2870,10 +3213,11 @@
             document.getElementById("btn-add-portfolio").style.display = "none";
           }
           loadPortfolio(userId);
-        } catch (e) {}
+        } catch (e) {
+          console.error(e);
+        }
       };
 
-      // حفظ تحديثات الملف الشخصي الشاملة
       document.getElementById("btn-save-profile").onclick = async () => {
         const btn = document.getElementById("btn-save-profile");
         btn.disabled = true;
@@ -2896,7 +3240,6 @@
             skills: skills,
           });
 
-          // تحديث العرض مباشرة
           document.getElementById("profile-bio-display").innerText =
             bio || "لا توجد نبذة مسجلة.";
           document.getElementById("profile-experience-display").innerText =
@@ -2926,7 +3269,6 @@
         btn.innerHTML = '<i class="fas fa-save"></i> حفظ جميع التحديثات';
       };
 
-      // معرض الأعمال
       document.getElementById("btn-add-portfolio").onclick = () => {
         document.getElementById("portfolio-modal").style.display = "flex";
       };
@@ -2999,7 +3341,6 @@
         }
       };
 
-      // --- الدردشة اللحظية بستايل مسنجر ---
       document.getElementById("btn-chat-img-trigger").onclick = () =>
         document.getElementById("chat-image-upload").click();
       document
@@ -3008,6 +3349,7 @@
           if (e.target.files.length > 0 && currentChatUserId) {
             const btn = document.getElementById("btn-chat-img-trigger");
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            btn.disabled = true;
             try {
               const imgUrl = await uploadImageToImgBB(e.target.files[0]);
               await addDoc(collection(db, "messages"), {
@@ -3023,9 +3365,11 @@
                 isRead: false,
               });
             } catch (err) {
-              showToast("فشل الرفع", "info");
+              console.error(err);
+              showToast("تعذّر رفع الصورة، يرجى المحاولة مجدداً.", "info");
             }
             btn.innerHTML = '<i class="fas fa-image"></i>';
+            btn.disabled = false;
             e.target.value = "";
           }
         });
@@ -3043,7 +3387,11 @@
         const chatId = [myId, userId].sort().join("_");
         if (chatUnsubscribe) chatUnsubscribe();
         chatUnsubscribe = onSnapshot(
-          query(collection(db, "messages"), orderBy("createdAt", "asc")),
+          query(
+            collection(db, "messages"),
+            where("chatId", "==", chatId),
+            orderBy("createdAt", "asc"),
+          ),
           (snapshot) => {
             const container = document.getElementById(
               "chat-messages-container",
@@ -3051,23 +3399,23 @@
             container.innerHTML = "";
             snapshot.forEach((docSnap) => {
               const msg = docSnap.data();
-              if (msg.chatId === chatId) {
-                const isMe = msg.senderId === myId;
-                const timeStr =
-                  formatDateToEnglish(msg.createdAt).split(",")[1] || "";
-                const imgHtml = msg.imageUrl
-                  ? `<img src="${msg.imageUrl}" class="chat-msg-img" onclick="window.open('${msg.imageUrl}', '_blank')">`
-                  : "";
-                const txtHtml = msg.text ? `<div>${msg.text}</div>` : "";
-                const avatarHtml = !isMe
-                  ? `<img src="${finalAvatar}" class="chat-msg-avatar">`
-                  : "";
-                container.innerHTML += `<div class="message-row ${isMe ? "sent" : "received"}">${avatarHtml}<div class="message-bubble">${txtHtml}${imgHtml}<span class="msg-time">${timeStr}</span></div></div>`;
-                if (msg.receiverId === myId && msg.isRead === false) {
-                  updateDoc(doc(db, "messages", docSnap.id), {
-                    isRead: true,
-                  }).catch((e) => {});
-                }
+              const isMe = msg.senderId === myId;
+              const timeStr =
+                formatDateToEnglish(msg.createdAt).split(",")[1] || "";
+              const imgHtml = msg.imageUrl
+                ? `<img src="${msg.imageUrl}" class="chat-msg-img" onclick="window.open('${msg.imageUrl}', '_blank')">`
+                : "";
+              const txtHtml = msg.text
+                ? `<div>${escapeHtml(msg.text)}</div>`
+                : "";
+              const avatarHtml = !isMe
+                ? `<img src="${finalAvatar}" class="chat-msg-avatar">`
+                : "";
+              container.innerHTML += `<div class="message-row ${isMe ? "sent" : "received"}">${avatarHtml}<div class="message-bubble">${txtHtml}${imgHtml}<span class="msg-time">${timeStr}</span></div></div>`;
+              if (msg.receiverId === myId && msg.isRead === false) {
+                updateDoc(doc(db, "messages", docSnap.id), {
+                  isRead: true,
+                }).catch(console.error);
               }
             });
             setTimeout(() => {
@@ -3094,7 +3442,9 @@
             isRead: false,
           });
         } catch (e) {
-          showToast("فشل الإرسال.", "info");
+          console.error(e);
+          showToast("تعذّر إرسال الرسالة.", "info");
+          input.value = text;
         }
       };
       document
@@ -3104,12 +3454,11 @@
             document.getElementById("btn-send-message").click();
         });
 
-      // --- الإدارة (لوحة تحكم مبرمج النظام والأدمن) ---
-      window.switchAdminTab = function (tabName) {
+      window.switchAdminTab = function (tabName, clickedEl) {
         document
           .querySelectorAll(".admin-tab")
           .forEach((el) => el.classList.remove("active"));
-        event.target.classList.add("active");
+        if (clickedEl) clickedEl.classList.add("active");
         document.getElementById("admin-tab-users").style.display =
           tabName === "users" ? "block" : "none";
         document.getElementById("admin-tab-spy").style.display =
