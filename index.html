@@ -1403,130 +1403,203 @@
       }
 
 
+      /* ================================================
+         MOBILE — شامل لكل الأجهزة الصغيرة
+         ================================================ */
+
+      /* زر بحث موبايل */
+      #btn-mobile-search { display: none; }
+
+      /* Overlay بحث الموبايل */
+      #mobile-search-overlay {
+        display: none; position: fixed; inset: 0;
+        background: var(--surface); z-index: 9500;
+        flex-direction: column;
+      }
+      #mobile-search-overlay.msearch-open { display: flex; }
+      .mob-chip {
+        display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+        padding: 5px 13px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;
+        cursor: pointer; border: 1.5px solid var(--border);
+        background: transparent; color: var(--text-muted);
+        font-family: 'Cairo', sans-serif; transition: 0.15s; flex-shrink: 0;
+      }
+      .mob-chip:hover  { border-color: var(--primary); color: var(--primary); }
+      .mob-chip.mob-chip-active { background: var(--primary); color: white; border-color: var(--primary); }
+
       @media (max-width: 768px) {
-        body { padding-bottom: 70px; }
 
-        nav {
-          padding: 0 12px;
-          height: 58px;
-        }
-        .nav-brand img { height: 44px; }
+        /* ── الجسم ── */
+        *, *::before, *::after { -webkit-tap-highlight-color: transparent; }
+        body { padding-bottom: 65px; overflow-x: hidden; }
+        .container       { padding: 0 12px; }
+        .container-large { padding: 0 10px; }
+        .view-section    { padding-top: 8px; padding-bottom: 80px; }
 
-        /* إخفاء شريط البحث في الناف على الجوال */
+        /* ── شريط التنقل ── */
+        nav { padding: 0 10px; height: 52px; gap: 6px; }
+        .nav-brand img { height: 38px; }
         #nav-search-wrap { display: none !important; }
+        #btn-mobile-search { display: inline-flex !important; }
+        .nav-user { gap: 2px; }
+        #btn-theme-toggle { padding: 6px 8px; font-size: 0.95rem; }
+        #hamburger-btn    { padding: 6px 8px; font-size: 1rem; }
+        #nav-avatar       { width: 30px !important; height: 30px !important; }
+        #btn-logout       { font-size: 0.85rem; padding: 5px 7px; }
 
+        /* ── التنقل السفلي ── */
         .nav-links {
-          position: fixed; bottom: 0; left: 0; width: 100%;
-          background: var(--surface); border-top: 1px solid var(--border);
-          display: flex; justify-content: space-around;
-          padding: 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.07);
-          z-index: 2000; height: 60px;
+          position: fixed; bottom: 0; left: 0; right: 0; top: auto;
+          height: 58px; z-index: 2000;
+          background: var(--surface);
+          border-top: 1.5px solid var(--border);
+          box-shadow: 0 -3px 16px rgba(0,0,0,0.09);
+          display: flex; align-items: stretch; justify-content: space-around;
+          padding: 0; gap: 0;
         }
         .nav-links a {
-          flex-direction: column; gap: 3px; padding: 8px 4px;
-          flex: 1; text-align: center; border-radius: 0; font-size: 0.6rem;
+          flex: 1; flex-direction: column; align-items: center;
+          justify-content: center; gap: 2px;
+          padding: 5px 2px 4px; border-radius: 0;
+          font-size: 0.56rem; color: var(--text-muted);
+          position: relative; min-width: 0;
         }
-        .nav-links a i { font-size: 1.2rem; }
-        .nav-links a span { display: block !important; font-size: 0.6rem; }
-
+        .nav-links a i { font-size: 1.2rem; display: block; }
+        .nav-links a span { display: block !important; font-size: 0.56rem; line-height: 1.2; white-space: nowrap; }
+        .nav-links a.active { color: var(--primary); }
+        .nav-links a.active i { color: var(--primary); }
+        .notification-badge {
+          position: absolute; top: 5px; right: calc(50% - 20px);
+          font-size: 0.58rem; min-width: 15px; height: 15px;
+          line-height: 15px; padding: 0 3px; border-radius: 10px;
+        }
         .notif-dropdown {
-          top: auto; bottom: 68px; left: 5%; width: 90%; right: auto;
+          position: fixed; bottom: 62px; left: 4%; right: 4%;
+          top: auto; width: auto; max-height: 70vh; overflow-y: auto;
+          border-radius: 16px;
         }
-        #toast-container { bottom: 72px; }
+        #toast-container { bottom: 68px; left: 10px; right: 10px; }
+        .toast { font-size: 0.85rem; padding: 11px 15px; border-radius: 12px; }
 
-        /* Dashboard */
-        .dashboard-layout { grid-template-columns: 1fr; gap: 16px; }
+        /* ── الهامبرجر ── */
+        #hamburger-menu { width: 272px; }
+        .hm-item { padding: 14px 18px; font-size: 0.9rem; }
 
-        /* Sidebar card - no sticky on mobile, simplified */
-        .main-feed .hero-banner { min-height: 110px; padding: 18px 16px; }
-        .hero-text h2 { font-size: 1.15rem; }
+        /* ── الداشبورد ── */
+        .dashboard-layout { grid-template-columns: 1fr; gap: 10px; }
+        .main-feed .hero-banner { min-height: 95px; padding: 14px 14px; border-radius: 14px; }
+        .hero-text h2 { font-size: 1.05rem; }
+        .hero-text p   { font-size: 0.82rem; }
         .hero-icon { display: none; }
+        .completion-card { padding: 10px 13px; }
 
-        /* Completion bar */
-        .completion-card { padding: 11px 14px; }
-
-        /* Sidebar members - horizontal scroll on mobile */
+        /* زملاء — سكرول أفقي */
         #dashboard-users-list {
-          display: flex; overflow-x: auto; gap: 12px; padding-bottom: 8px;
+          display: flex; flex-direction: row; overflow-x: auto;
+          gap: 9px; padding: 4px 0 10px; scrollbar-width: none;
         }
+        #dashboard-users-list::-webkit-scrollbar { display: none; }
         #dashboard-users-list .sidebar-member {
-          flex-direction: column; min-width: 80px; max-width: 80px;
-          padding: 10px 6px; align-items: center; text-align: center;
-          background: var(--bg-body); border-radius: 12px; margin-bottom: 0;
+          flex-direction: column; min-width: 72px; max-width: 72px;
+          padding: 9px 5px; align-items: center; text-align: center;
+          background: var(--surface); border: 1px solid var(--border);
+          border-radius: 14px; margin-bottom: 0; flex-shrink: 0;
         }
-        #dashboard-users-list .sidebar-member img { width: 42px; height: 42px; }
+        #dashboard-users-list .sidebar-member img { width: 38px; height: 38px; }
         #dashboard-users-list .smem-role { display: none; }
-        #dashboard-users-list .smem-name { font-size: 0.72rem; }
-        #dashboard-users-list .btn-fol { font-size: 0.65rem; padding: 2px 7px; margin-top: 4px; }
+        #dashboard-users-list .smem-name { font-size: 0.68rem; line-height: 1.3; white-space: normal; }
+        #dashboard-users-list .btn-fol { font-size: 0.6rem; padding: 2px 5px; margin-top: 3px; }
         #dashboard-users-list .skill-tags-mini { display: none; }
 
-        /* Insta link */
-        .insta-link { font-size: 0.83rem; }
+        /* ── البوستات ── */
+        .post-card { border-radius: 14px; padding: 13px; }
+        .post-author-name { font-size: 0.88rem; }
+        .post-content { font-size: 0.86rem; line-height: 1.65; }
+        .post-actions { gap: 4px; flex-wrap: wrap; }
+        .post-action-btn { padding: 6px 9px; font-size: 0.76rem; }
+        .skill-tag { font-size: 0.7rem; padding: 2px 9px; }
 
-        /* Chat */
+        /* ── الوظائف والفعاليات ── */
+        .job-card, .event-card { padding: 13px; border-radius: 14px; }
+        .job-card h3 { font-size: 0.93rem; }
+
+        /* ── الدردشة ── */
         .chat-layout {
-          flex-direction: column; height: calc(100vh - 130px); border-radius: 0;
+          flex-direction: column;
+          height: calc(100svh - 110px);
+          border-radius: 0; border: none; box-shadow: none;
         }
         .chat-sidebar {
-          width: 100%; border-left: none; border-bottom: 1px solid var(--border);
-          max-height: 110px; flex-direction: row; padding: 0;
-          flex-shrink: 0;
+          width: 100%; border-left: none;
+          border-bottom: 1.5px solid var(--border);
+          max-height: 96px; padding: 0; flex-shrink: 0;
         }
-        #chat-users-list-container { padding: 8px 10px; gap: 6px; }
         .chat-sidebar-header { display: none; }
         .chat-sidebar-search { display: none; }
+        #chat-users-list-container { padding: 6px 10px; gap: 7px; }
         .chat-user-item {
-          flex-direction: column; min-width: 66px; max-width: 66px;
-          padding: 5px 4px; border-bottom: none; border-radius: 10px;
+          flex-direction: column; width: 62px; min-width: 62px; max-width: 62px;
+          padding: 5px 3px; border-bottom: none; border-radius: 10px;
           align-items: center; text-align: center; gap: 3px;
         }
-        .chat-user-item.active-chat { border-right: none; background: rgba(32,59,95,0.08); }
+        .chat-user-item.active-chat { background: rgba(32,59,95,0.09); border-right: none; }
         .chat-user-avatar { width: 36px; height: 36px; }
         .chat-user-role { display: none; }
-        .chat-user-name { font-size: 0.68rem; }
-        .chat-unread-dot { position: absolute; top: 4px; right: 6px; }
-        .message-bubble { max-width: 84%; font-size: 0.88rem; }
-        .chat-input-area { padding: 8px 10px; }
+        .chat-user-name { font-size: 0.65rem; line-height: 1.25; }
+        .chat-unread-dot { top: 3px; right: 4px; }
+        .message-bubble { max-width: 86%; font-size: 0.86rem; }
+        .chat-input-area { padding: 7px 10px; }
+        #chat-message-input { font-size: 0.88rem; padding: 9px 12px; }
 
-        /* Profile */
-        .profile-stats { gap: 16px; }
-        .container-large { padding: 0 8px; }
+        /* ── البروفايل ── */
+        .profile-stats { gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .profile-card { padding: 18px 13px !important; }
+        #profile-avatar-container img { width: 82px !important; height: 82px !important; }
+        .follow-stats { justify-content: center !important; gap: 8px !important; flex-wrap: wrap !important; }
+        .follow-stats button { padding: 7px 13px !important; font-size: 0.8rem !important; }
 
-        /* Cards */
-        .card { padding: 16px; border-radius: 12px; }
+        /* ── المودالات ── */
+        .modal-content { padding: 18px 14px; border-radius: 18px; }
+        .fol-modal-box { border-radius: 20px 20px 0 0; max-height: 90vh; width: 100% !important; }
+        .fol-modal-overlay { align-items: flex-end !important; }
 
-        /* Admin panel */
-        #admin-users-table { font-size: 0.83rem; }
-        .dev-tab-btn { padding: 12px 14px !important; font-size: 0.82rem !important; }
-      }
+        /* ── لوحة الإدارة ── */
+        .dev-tab-btn { padding: 10px 11px !important; font-size: 0.79rem !important; }
+        #admin-users-table { font-size: 0.79rem; }
+        #admin-users-table td, #admin-users-table th { padding: 7px 6px; }
+        #tester-role-switcher { bottom: 66px; left: 8px; min-width: 158px; }
 
-      @media (max-width: 480px) {
-        .hero-text h2 { font-size: 1.05rem; }
-        .post-actions { gap: 5px; }
-        .post-action-btn { padding: 6px 10px; font-size: 0.8rem; }
-        .message-bubble { max-width: 90%; }
-        nav .nav-user .btn { display: none; }
-        /* Follow modal mobile fix */
-        #follow-list-modal > div { width: 96%; border-radius: 16px; max-height: 88vh; }
-        /* Post cards */
-        .post-card { border-radius: 14px; padding: 14px; }
-        /* Profile */
-        .profile-card { padding: 20px 14px !important; }
-        #profile-avatar-container img { width: 80px !important; height: 80px !important; }
-        /* Chat input */
-        .chat-input-area { padding: 6px 8px; }
-        #chat-message-input { font-size: 0.88rem; }
-      }
-
-      /* Mobile: make cards not too padded */
-      @media (max-width: 600px) {
-        .container { padding: 0 10px; }
-        .container-large { padding: 0 8px; }
+        /* ── الأقسام الجديدة ── */
         .section-view-card { border-radius: 14px !important; }
-        #hamburger-menu { width: 260px; }
-        .follow-stats button { padding: 7px 12px !important; }
-        .follow-stats button .fa-user-friends,
-        .follow-stats button .fa-user-check { font-size: 0.8rem !important; }
+        .roadmap-step-card { padding: 12px 13px !important; }
+        .insta-link { font-size: 0.82rem; }
+
+        /* ── الكروت العامة ── */
+        .card { padding: 14px; border-radius: 14px; }
+        h3 { font-size: 1rem; }
+      }
+
+      /* ── هواتف صغيرة جداً (< 400px) ── */
+      @media (max-width: 400px) {
+        nav { padding: 0 8px; height: 50px; }
+        .nav-brand img { height: 34px; }
+        .nav-links { height: 56px; }
+        .nav-links a span { font-size: 0.52rem; }
+        .nav-links a i { font-size: 1.1rem; }
+        #hamburger-menu { width: 85vw; }
+
+        .post-action-btn { padding: 5px 7px; font-size: 0.72rem; }
+        .message-bubble { max-width: 91%; }
+        .chat-user-item { width: 56px; min-width: 56px; }
+
+        .fol-modal-box { border-radius: 18px 18px 0 0; }
+        #profile-avatar-container img { width: 74px !important; height: 74px !important; }
+
+        .card { padding: 11px; }
+        .hero-text h2 { font-size: 0.95rem; }
+        .hero-text p { font-size: 0.78rem; }
+
+        #dashboard-users-list .sidebar-member { min-width: 66px; max-width: 66px; }
       }
 
       /* ===== Follow Modal ===== */
@@ -1860,7 +1933,12 @@
         >
       </div>
 
-      <div class="nav-user" style="gap:6px;">
+      <div class="nav-user" style="gap:4px;">
+        <!-- زر بحث موبايل فقط -->
+        <button id="btn-mobile-search" onclick="openMobileSearch()" title="بحث"
+          style="background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:1.05rem; padding:6px 8px; border-radius:8px; transition:0.15s;">
+          <i class="fas fa-search"></i>
+        </button>
         <button id="btn-theme-toggle" title="الوضع الليلي" onclick="toggleTheme()">
           <i class="fas fa-moon" id="theme-icon"></i>
         </button>
@@ -5272,6 +5350,87 @@
           } catch(e) { console.error(e); }
         }
       };
+
+      // ===== Mobile Search Overlay =====
+      let _mobFilter = 'all';
+
+      window.openMobileSearch = function() {
+        const ov = document.getElementById('mobile-search-overlay');
+        ov.classList.add('msearch-open');
+        setTimeout(() => document.getElementById('mobile-search-input')?.focus(), 120);
+      };
+
+      window.closeMobileSearch = function() {
+        document.getElementById('mobile-search-overlay').classList.remove('msearch-open');
+        document.getElementById('mobile-search-input').value = '';
+        _mobFilter = 'all';
+        document.querySelectorAll('.mob-chip').forEach(b => b.classList.remove('mob-chip-active'));
+        const first = document.querySelector('.mob-chip');
+        if (first) first.classList.add('mob-chip-active');
+        document.getElementById('mob-search-results').innerHTML = '';
+      };
+
+      window.setMobFilter = function(filter, btn) {
+        _mobFilter = filter;
+        document.querySelectorAll('.mob-chip').forEach(b => b.classList.remove('mob-chip-active'));
+        btn.classList.add('mob-chip-active');
+        runMobileSearch(document.getElementById('mobile-search-input').value);
+      };
+
+      window.runMobileSearch = function(val) {
+        const el   = document.getElementById('mob-search-results');
+        const q    = val.trim().toLowerCase();
+        const roleMap = { student:'طالب', graduate:'خريج', company:'مؤسسة', admin:'إدارة', instructor:'مدرس', tester:'مبرمج' };
+        const wsMap   = { available:'متاح للعمل', training:'في تدريب', open:'منفتح على الفرص' };
+        const wsColors= { available:'#2e7d32', training:'#e65100', open:'#1565c0' };
+
+        if (!q && _mobFilter === 'all') {
+          el.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--text-muted);">
+            <i class="fas fa-search" style="font-size:2rem;opacity:0.25;display:block;margin-bottom:10px;"></i>
+            اكتب للبحث أو اختر فلتراً
+          </div>`;
+          return;
+        }
+
+        let results = allUsersCache.filter(u => {
+          if (_mobFilter === 'student'   && u.role !== 'student')   return false;
+          if (_mobFilter === 'graduate'  && u.role !== 'graduate')  return false;
+          if (_mobFilter === 'company'   && u.role !== 'company')   return false;
+          if (_mobFilter === 'available' && u.workStatus !== 'available') return false;
+          if (!q) return true;
+          const skills = (u.skills||'').toLowerCase();
+          return u.name?.toLowerCase().includes(q) || skills.includes(q) ||
+            (roleMap[u.role]||'').includes(q) || (wsMap[u.workStatus]||'').includes(q);
+        }).slice(0, 10);
+
+        if (!results.length) {
+          el.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--text-muted);">
+            <i class="fas fa-user-slash" style="font-size:2rem;opacity:0.25;display:block;margin-bottom:10px;"></i>
+            لا توجد نتائج${q ? ' لـ <strong>' + q + '</strong>' : ''}
+          </div>`;
+          return;
+        }
+
+        function escRx3(s){ return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,'\\$&'); }
+        el.innerHTML = results.map(u => {
+          const av  = getAvatar(u.name, u.avatarUrl);
+          const hl  = q ? u.name.replace(new RegExp('(' + escRx3(q) + ')','gi'),'<mark style="background:#fff3cd;border-radius:2px;padding:0 1px;">$1</mark>') : u.name;
+          const ws  = u.workStatus && wsMap[u.workStatus]
+            ? `<span style="color:${wsColors[u.workStatus]};font-size:0.72rem;"><i class="fas fa-circle" style="font-size:0.45rem;"></i> ${wsMap[u.workStatus]}</span>` : '';
+          const tags = (u.skills||'').split(',').slice(0,3).map(s=>s.trim()).filter(Boolean)
+            .map(s=>`<span style="background:#e3f2fd;color:#1565c0;border-radius:20px;padding:2px 9px;font-size:0.7rem;margin:1px;display:inline-block;">${s}</span>`).join('');
+          return `<div style="display:flex;align-items:center;gap:13px;padding:12px 10px;border-radius:14px;cursor:pointer;border-bottom:1px solid var(--border);"
+            onclick="closeMobileSearch(); setTimeout(()=>viewProfile('${u.uid}'),80)">
+            <img src="${av}" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--border);flex-shrink:0;">
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;color:var(--primary);font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${hl} ${ws}</div>
+              <div style="font-size:0.74rem;color:var(--text-muted);margin:2px 0;">${roleMap[u.role]||u.role}${u.bio?' · '+u.bio.slice(0,35)+(u.bio.length>35?'…':''):''}</div>
+              <div>${tags}</div>
+            </div>
+            <i class="fas fa-chevron-left" style="color:var(--border);font-size:0.8rem;flex-shrink:0;"></i>
+          </div>`;
+        }).join('');
+      };
     </script>
 
     <!-- ===== About Section ===== -->
@@ -5421,6 +5580,32 @@
         <p style="color:var(--text-muted); margin:0 0 24px;">كل ما تريد معرفته عن منصة صيت</p>
         <div id="faq-list" style="display:flex; flex-direction:column; gap:10px;"></div>
       </div>
+    </div>
+
+    <!-- ===== Mobile Search Overlay ===== -->
+    <div id="mobile-search-overlay">
+      <!-- Header -->
+      <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--primary); flex-shrink:0;">
+        <button onclick="closeMobileSearch()" style="background:rgba(255,255,255,0.18); border:none; color:white; padding:8px 11px; border-radius:10px; cursor:pointer; font-size:1rem; flex-shrink:0;">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <div style="flex:1; position:relative;">
+          <i class="fas fa-search" style="position:absolute; right:13px; top:50%; transform:translateY(-50%); color:rgba(255,255,255,0.55); pointer-events:none; font-size:0.85rem;"></i>
+          <input id="mobile-search-input" type="text" placeholder="ابحث عن زميل أو مهارة..." autocomplete="off"
+            oninput="runMobileSearch(this.value)"
+            style="width:100%; padding:10px 38px 10px 14px; border:none; border-radius:12px; font-family:'Cairo',sans-serif; font-size:0.95rem; outline:none; background:rgba(255,255,255,0.16); color:white; box-sizing:border-box;">
+        </div>
+      </div>
+      <!-- Filter chips -->
+      <div style="display:flex; gap:7px; padding:10px 12px; overflow-x:auto; border-bottom:1px solid var(--border); scrollbar-width:none; flex-shrink:0;">
+        <button class="mob-chip mob-chip-active" onclick="setMobFilter('all',this)"><i class="fas fa-users"></i> الكل</button>
+        <button class="mob-chip" onclick="setMobFilter('student',this)"><i class="fas fa-user-graduate"></i> طلاب</button>
+        <button class="mob-chip" onclick="setMobFilter('graduate',this)"><i class="fas fa-award"></i> خريجون</button>
+        <button class="mob-chip" onclick="setMobFilter('company',this)"><i class="fas fa-building"></i> مؤسسات</button>
+        <button class="mob-chip" onclick="setMobFilter('available',this)"><i class="fas fa-circle" style="font-size:0.5rem;color:#4caf50;"></i> متاح للعمل</button>
+      </div>
+      <!-- Results -->
+      <div id="mob-search-results" style="flex:1; overflow-y:auto; padding:8px;"></div>
     </div>
 
   </body>
