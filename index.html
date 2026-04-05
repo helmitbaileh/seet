@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>صيت | منصة العلاقات العامة المهنية</title>
     <link rel="icon" type="image/png" href="https://i.ibb.co/KcNTbTFz/image.png">
     <meta name="description" content="منصة صيت - هنا نصنع الأثر.. هنا نبني الصيت">
@@ -37,21 +37,35 @@
         --transition: all 0.25s ease;
       }
 
-      * {
+      *, *::before, *::after {
         box-sizing: border-box;
-        font-family: "Cairo", sans-serif;
         margin: 0;
         padding: 0;
         outline: none;
       }
+      /* Cairo على العناصر النصية فقط — لا نكسر Font Awesome */
+      body, input, textarea, select, button,
+      h1,h2,h3,h4,h5,h6, p, span:not(.fas):not(.far):not(.fab),
+      div:not(.fas):not(.far):not(.fab), a, label, td, th, li {
+        font-family: "Cairo", sans-serif;
+      }
+      /* Font Awesome — محمي تماماً */
+      .fas, .far, .fab, .fal, .fad, .fa, [class^="fa-"], [class*=" fa-"] {
+        font-family: "Font Awesome 6 Free" !important;
+        font-weight: 900 !important;
+        -webkit-font-smoothing: antialiased;
+        display: inline-block;
+      }
+      .fab { font-family: "Font Awesome 6 Brands" !important; font-weight: 400 !important; }
+      html { overflow-x: hidden; max-width: 100%; }
       body {
         background-color: var(--bg-body);
         color: var(--text-main);
         line-height: 1.6;
         overflow-x: hidden;
+        max-width: 100%;
+        direction: rtl;
       }
-
-
       nav {
         background: var(--surface);
         padding: 0 5%;
@@ -87,13 +101,17 @@
         font-weight: 700;
         cursor: pointer;
         transition: var(--transition);
-        padding: 8px 16px;
+        padding: 8px 14px;
         border-radius: var(--radius);
         display: flex;
         align-items: center;
         gap: 6px;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
       }
+      /* Desktop: spans hidden — icons only */
+      .nav-links a span:not(.notification-badge) { display: none; }
+      /* Desktop icon size */
+      .nav-links a i { font-size: 1.15rem; }
       .nav-links a:hover,
       .nav-links a.active {
         background: rgba(32, 59, 95, 0.05);
@@ -176,11 +194,13 @@
         max-width: 750px;
         margin: 30px auto;
         padding: 0 15px;
+        width: 100%;
       }
       .container-large {
         max-width: 1150px;
         margin: 30px auto;
         padding: 0 15px;
+        width: 100%;
       }
       .dashboard-layout {
         display: grid;
@@ -372,42 +392,67 @@
 
       .portfolio-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
         margin-top: 15px;
+        width: 100%;
       }
       .portfolio-item {
         background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: 12px;
+        border-radius: 14px;
         overflow: hidden;
-        transition: 0.3s;
+        transition: 0.25s;
+        position: relative;
+        display: flex;
+        flex-direction: column;
       }
       .portfolio-item:hover {
-        box-shadow: var(--shadow-sm);
+        box-shadow: 0 6px 24px rgba(0,0,0,0.1);
         transform: translateY(-3px);
         border-color: var(--secondary);
       }
       .portfolio-img {
         width: 100%;
-        height: 160px;
+        height: 150px;
         object-fit: cover;
-        background: #eee;
+        background: var(--bg-body);
+        flex-shrink: 0;
+        display: block;
+      }
+      .portfolio-img-placeholder {
+        width: 100%; height: 150px;
+        display: flex; align-items: center; justify-content: center;
+        background: linear-gradient(135deg, var(--bg-body), #e8edf2);
+        color: var(--text-muted); flex-shrink: 0;
       }
       .portfolio-info {
-        padding: 15px;
+        padding: 12px 14px 14px;
         text-align: right;
+        flex: 1;
       }
       .portfolio-info h4 {
         margin: 0 0 5px 0;
         color: var(--primary);
-        font-size: 1.05rem;
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.4;
       }
       .portfolio-info p {
         margin: 0;
         color: var(--text-muted);
-        font-size: 0.85rem;
+        font-size: 0.82rem;
+        line-height: 1.55;
       }
+      .portfolio-del-btn {
+        position: absolute; top: 8px; right: 8px;
+        background: rgba(255,255,255,0.92); color: var(--danger);
+        border: none; width: 30px; height: 30px; border-radius: 8px;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
+        font-size: 0.8rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        transition: 0.15s;
+      }
+      .portfolio-del-btn:hover { background: var(--danger); color: white; }
 
 
 
@@ -861,17 +906,50 @@
         background: #111e2d !important; color: var(--text-main) !important;
         border-color: var(--border) !important;
       }
-      [data-theme="dark"] .search-drop { background: #1a2535; border-color: var(--border); }
+      [data-theme="dark"] input::placeholder, [data-theme="dark"] textarea::placeholder { color: var(--text-muted) !important; }
+      [data-theme="dark"] .search-drop { background: #1a2535 !important; border-color: var(--border); }
+      [data-theme="dark"] .sr-filters { background: #1a2535 !important; }
+      [data-theme="dark"] .sr-item { border-color: #2a3a50; }
+      [data-theme="dark"] .sr-item:hover { background: #111e2d !important; }
+      [data-theme="dark"] .sr-name { color: var(--text-main) !important; }
+      [data-theme="dark"] .sr-meta { color: var(--text-muted) !important; }
       [data-theme="dark"] .chat-sidebar { background: #131f2e !important; }
+      [data-theme="dark"] .chat-area { background: #0f1923 !important; }
       [data-theme="dark"] .chat-user-item.has-unread { background: #1e2d1a !important; }
+      [data-theme="dark"] .chat-input-area { background: #131f2e !important; border-top-color: #2a3a50 !important; }
+      [data-theme="dark"] #chat-message-input { background: #111e2d !important; color: var(--text-main) !important; }
+      [data-theme="dark"] .message-bubble.me { background: linear-gradient(135deg,#1e4080,#1a3a6c) !important; }
+      [data-theme="dark"] .message-bubble.other { background: #1e2f42 !important; color: var(--text-main) !important; }
       [data-theme="dark"] .notif-dropdown { background: #1a2535 !important; border-color: var(--border) !important; }
-      [data-theme="dark"] .modal-content { background: #1a2535 !important; }
+      [data-theme="dark"] .notif-item { border-color: #2a3a50 !important; }
+      [data-theme="dark"] .notif-item:hover { background: #111e2d !important; }
+      [data-theme="dark"] .notif-header { background: #111e2d !important; color: var(--text-main) !important; border-color: #2a3a50 !important; }
+      [data-theme="dark"] .modal-content { background: #1a2535 !important; color: var(--text-main) !important; }
+      [data-theme="dark"] .modal-overlay { background: rgba(0,0,0,0.75) !important; }
       [data-theme="dark"] .nav-links { background: #111e2d !important; border-top-color: #1e2f42 !important; }
       [data-theme="dark"] .sidebar-member { background: #131f2e !important; }
       [data-theme="dark"] .endorsement-card { background: #162040 !important; border-color: #2a3f60 !important; }
       [data-theme="dark"] #hamburger-menu { background: #1a2535 !important; }
       [data-theme="dark"] .hm-header { background: #0d1e32 !important; }
       [data-theme="dark"] .section-view-card { background: #1a2535 !important; }
+      [data-theme="dark"] .portfolio-item { background: #1a2535 !important; border-color: #2a3a50 !important; }
+      [data-theme="dark"] .portfolio-img { background: #111e2d !important; }
+      [data-theme="dark"] .portfolio-info h4 { color: #7ab3e8 !important; }
+      [data-theme="dark"] .portfolio-info p { color: var(--text-muted) !important; }
+      [data-theme="dark"] .job-card, [data-theme="dark"] .event-card { background: #1a2535 !important; border-color: #2a3a50 !important; }
+      [data-theme="dark"] .job-card h3, [data-theme="dark"] .event-card h3 { color: #7ab3e8 !important; }
+      [data-theme="dark"] .fol-modal-box { background: #1a2535 !important; }
+      [data-theme="dark"] .fol-modal-search { background: #111e2d !important; border-color: #2a3a50 !important; }
+      [data-theme="dark"] .fol-modal-search input { color: var(--text-main) !important; }
+      [data-theme="dark"] .fol-user-row:hover { background: #111e2d !important; }
+      [data-theme="dark"] .completion-card { background: #1a2535 !important; border-color: #2a3a50 !important; }
+      [data-theme="dark"] .sr-chip { border-color: #2a3a50; color: var(--text-muted); }
+      [data-theme="dark"] .mob-chip { border-color: #2a3a50; color: var(--text-muted); }
+      [data-theme="dark"] #mobile-search-overlay { background: #0f1923 !important; }
+      [data-theme="dark"] mark { background: rgba(242,169,0,0.25) !important; }
+      /* ── Research section dark ── */
+      [data-theme="dark"] .research-card { background: #1a2535 !important; border-color: #2a3a50 !important; }
+      [data-theme="dark"] .research-card h4 { color: #7ab3e8 !important; }
 
       /* Theme toggle */
       #btn-theme-toggle {
@@ -1403,203 +1481,387 @@
       }
 
 
-      /* ================================================
-         MOBILE — شامل لكل الأجهزة الصغيرة
-         ================================================ */
-
-      /* زر بحث موبايل */
+      /* ─────────────────────────────────────────────
+         Mobile Search Overlay & Chips
+         ───────────────────────────────────────────── */
       #btn-mobile-search { display: none; }
 
-      /* Overlay بحث الموبايل */
       #mobile-search-overlay {
         display: none; position: fixed; inset: 0;
         background: var(--surface); z-index: 9500;
         flex-direction: column;
       }
       #mobile-search-overlay.msearch-open { display: flex; }
+
       .mob-chip {
         display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
         padding: 5px 13px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;
         cursor: pointer; border: 1.5px solid var(--border);
-        background: transparent; color: var(--text-muted);
-        font-family: 'Cairo', sans-serif; transition: 0.15s; flex-shrink: 0;
+        background: transparent; color: var(--text-muted); transition: 0.15s; flex-shrink: 0;
       }
-      .mob-chip:hover  { border-color: var(--primary); color: var(--primary); }
+      .mob-chip:hover { border-color: var(--primary); color: var(--primary); }
       .mob-chip.mob-chip-active { background: var(--primary); color: white; border-color: var(--primary); }
 
+      /* ─────────────────────────────────────────────
+         TABLET & MOBILE  ≤ 768px
+         ───────────────────────────────────────────── */
       @media (max-width: 768px) {
 
-        /* ── الجسم ── */
-        *, *::before, *::after { -webkit-tap-highlight-color: transparent; }
-        body { padding-bottom: 65px; overflow-x: hidden; }
-        .container       { padding: 0 12px; }
-        .container-large { padding: 0 10px; }
-        .view-section    { padding-top: 8px; padding-bottom: 80px; }
+        /* اللمس */
+        * { -webkit-tap-highlight-color: transparent; }
 
-        /* ── شريط التنقل ── */
-        nav { padding: 0 10px; height: 52px; gap: 6px; }
-        .nav-brand img { height: 38px; }
-        #nav-search-wrap { display: none !important; }
+        /* الجسم */
+        body { padding-bottom: 62px; }
+        .container       { padding: 0 12px; margin: 16px auto; }
+        .container-large { padding: 0 10px; margin: 12px auto; }
+        .view-section    { padding-top: 8px; padding-bottom: 76px; }
+
+        /* ── NAV ── */
+        nav {
+          padding: 0 10px;
+          height: 52px;
+        }
+        .nav-brand img { height: 36px; }
+        #nav-search-wrap  { display: none !important; }
         #btn-mobile-search { display: inline-flex !important; }
-        .nav-user { gap: 2px; }
-        #btn-theme-toggle { padding: 6px 8px; font-size: 0.95rem; }
-        #hamburger-btn    { padding: 6px 8px; font-size: 1rem; }
-        #nav-avatar       { width: 30px !important; height: 30px !important; }
-        #btn-logout       { font-size: 0.85rem; padding: 5px 7px; }
+        .nav-user  { gap: 0px; }
+        #btn-theme-toggle { padding: 5px 7px; font-size: 0.95rem; }
+        #hamburger-btn    { padding: 5px 7px; font-size: 1rem; }
+        #nav-avatar  { width: 28px !important; height: 28px !important; border-width: 2px !important; }
+        #btn-logout  { padding: 5px 6px; }
+        #btn-logout i { font-size: 0.9rem; }
 
-        /* ── التنقل السفلي ── */
+        /* ── Bottom tab bar ── */
         .nav-links {
-          position: fixed; bottom: 0; left: 0; right: 0; top: auto;
-          height: 58px; z-index: 2000;
+          position: fixed; bottom: 0; left: 0; right: 0;
+          height: 56px; z-index: 2000;
           background: var(--surface);
-          border-top: 1.5px solid var(--border);
-          box-shadow: 0 -3px 16px rgba(0,0,0,0.09);
-          display: flex; align-items: stretch; justify-content: space-around;
+          border-top: 1px solid var(--border);
+          box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+          display: flex !important; align-items: stretch;
           padding: 0; gap: 0;
+          /* prevent any horizontal overflow */
+          overflow: hidden;
         }
         .nav-links a {
-          flex: 1; flex-direction: column; align-items: center;
-          justify-content: center; gap: 2px;
-          padding: 5px 2px 4px; border-radius: 0;
-          font-size: 0.56rem; color: var(--text-muted);
-          position: relative; min-width: 0;
+          flex: 1;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: 2px;
+          padding: 5px 2px 4px;
+          border-radius: 0;
+          color: var(--text-muted);
+          position: relative;
+          min-width: 0;
+          background: none !important;
+          font-size: 0.58rem;
+          font-weight: 600;
+          line-height: 1;
         }
-        .nav-links a i { font-size: 1.2rem; display: block; }
-        .nav-links a span { display: block !important; font-size: 0.56rem; line-height: 1.2; white-space: nowrap; }
-        .nav-links a.active { color: var(--primary); }
-        .nav-links a.active i { color: var(--primary); }
+        .nav-links a:hover, .nav-links a.active {
+          background: none !important;
+          color: var(--primary) !important;
+        }
+        /* أيقونات — مضمونة الظهور */
+        .nav-links a i {
+          font-size: 1.3rem !important;
+          display: block !important;
+          line-height: 1.3 !important;
+          height: auto !important;
+          width: auto !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          color: inherit !important;
+          font-family: "Font Awesome 6 Free" !important;
+          font-weight: 900 !important;
+        }
+        /* النصوص */
+        .nav-links a span:not(.notification-badge) {
+          display: block !important;
+          font-size: 0.58rem !important;
+          font-family: "Cairo", sans-serif !important;
+          line-height: 1.1 !important;
+          white-space: nowrap !important;
+          overflow: hidden;
+          text-overflow: clip;
+          max-width: 100%;
+          margin-top: 1px;
+        }
+        /* Notif dropdown — fixed, outside flex flow */
+        .notif-dropdown,
+        .nav-links a .notif-dropdown,
+        .nav-links div .notif-dropdown {
+          position: fixed !important;
+          bottom: 60px !important;
+          left: 3% !important;
+          right: 3% !important;
+          top: auto !important;
+          width: auto !important;
+          flex-direction: column !important;
+          align-items: stretch !important;
+          font-size: 0.85rem;
+          max-height: 72vh;
+          overflow-y: auto;
+          border-radius: 16px;
+          z-index: 3000;
+        }
         .notification-badge {
-          position: absolute; top: 5px; right: calc(50% - 20px);
-          font-size: 0.58rem; min-width: 15px; height: 15px;
-          line-height: 15px; padding: 0 3px; border-radius: 10px;
+          position: absolute; top: 3px; right: 20%;
+          font-size: 0.55rem; min-width: 14px; height: 14px;
+          line-height: 14px; padding: 0 2px; border-radius: 8px;
         }
         .notif-dropdown {
-          position: fixed; bottom: 62px; left: 4%; right: 4%;
-          top: auto; width: auto; max-height: 70vh; overflow-y: auto;
+          position: fixed !important;
+          bottom: 60px; left: 3%; right: 3%; top: auto !important;
+          width: auto; max-height: 72vh; overflow-y: auto;
           border-radius: 16px;
         }
-        #toast-container { bottom: 68px; left: 10px; right: 10px; }
-        .toast { font-size: 0.85rem; padding: 11px 15px; border-radius: 12px; }
+        #toast-container { bottom: 66px; left: 10px; right: 10px; }
+        .toast { font-size: 0.84rem; padding: 10px 14px; }
 
-        /* ── الهامبرجر ── */
-        #hamburger-menu { width: 272px; }
-        .hm-item { padding: 14px 18px; font-size: 0.9rem; }
+        /* ── Hamburger ── */
+        #hamburger-menu { width: 270px; }
+        .hm-item { padding: 13px 16px; font-size: 0.88rem; }
 
-        /* ── الداشبورد ── */
-        .dashboard-layout { grid-template-columns: 1fr; gap: 10px; }
-        .main-feed .hero-banner { min-height: 95px; padding: 14px 14px; border-radius: 14px; }
-        .hero-text h2 { font-size: 1.05rem; }
-        .hero-text p   { font-size: 0.82rem; }
+        /* ── Dashboard ── */
+        .dashboard-layout {
+          grid-template-columns: 1fr !important;
+          gap: 10px;
+        }
+        .main-feed .hero-banner {
+          min-height: 90px; padding: 14px; border-radius: 14px;
+        }
+        .hero-text h2 { font-size: 1rem; }
+        .hero-text p  { font-size: 0.8rem; }
         .hero-icon { display: none; }
-        .completion-card { padding: 10px 13px; }
+        .ws-badge { font-size: 0.72rem; padding: 3px 10px; }
+        .completion-card { padding: 10px 12px; }
 
-        /* زملاء — سكرول أفقي */
+        /* Sidebar members → horizontal scroll */
         #dashboard-users-list {
-          display: flex; flex-direction: row; overflow-x: auto;
-          gap: 9px; padding: 4px 0 10px; scrollbar-width: none;
+          display: flex !important;
+          flex-direction: row !important;
+          overflow-x: auto;
+          gap: 8px;
+          padding: 4px 0 10px;
+          scrollbar-width: none;
         }
         #dashboard-users-list::-webkit-scrollbar { display: none; }
         #dashboard-users-list .sidebar-member {
-          flex-direction: column; min-width: 72px; max-width: 72px;
-          padding: 9px 5px; align-items: center; text-align: center;
-          background: var(--surface); border: 1px solid var(--border);
+          flex-direction: column !important;
+          min-width: 70px; max-width: 70px;
+          padding: 8px 4px;
+          align-items: center; text-align: center;
           border-radius: 14px; margin-bottom: 0; flex-shrink: 0;
         }
-        #dashboard-users-list .sidebar-member img { width: 38px; height: 38px; }
-        #dashboard-users-list .smem-role { display: none; }
-        #dashboard-users-list .smem-name { font-size: 0.68rem; line-height: 1.3; white-space: normal; }
-        #dashboard-users-list .btn-fol { font-size: 0.6rem; padding: 2px 5px; margin-top: 3px; }
-        #dashboard-users-list .skill-tags-mini { display: none; }
+        #dashboard-users-list .sidebar-member img { width: 36px !important; height: 36px !important; }
+        #dashboard-users-list .smem-role    { display: none !important; }
+        #dashboard-users-list .skill-tags-mini { display: none !important; }
+        #dashboard-users-list .smem-name    { font-size: 0.66rem; white-space: normal; line-height: 1.25; }
+        #dashboard-users-list .btn-fol      { font-size: 0.58rem; padding: 2px 5px; margin-top: 3px; }
 
-        /* ── البوستات ── */
-        .post-card { border-radius: 14px; padding: 13px; }
-        .post-author-name { font-size: 0.88rem; }
-        .post-content { font-size: 0.86rem; line-height: 1.65; }
-        .post-actions { gap: 4px; flex-wrap: wrap; }
-        .post-action-btn { padding: 6px 9px; font-size: 0.76rem; }
-        .skill-tag { font-size: 0.7rem; padding: 2px 9px; }
+        /* ── Posts ── */
+        .post-card   { border-radius: 13px; padding: 12px; }
+        .post-author-name { font-size: 0.87rem; }
+        .post-content     { font-size: 0.85rem; line-height: 1.65; }
+        .post-actions     { gap: 4px; flex-wrap: wrap; }
+        .post-action-btn  { padding: 6px 9px; font-size: 0.75rem; }
+        .skill-tag { font-size: 0.7rem; padding: 2px 8px; }
 
-        /* ── الوظائف والفعاليات ── */
-        .job-card, .event-card { padding: 13px; border-radius: 14px; }
-        .job-card h3 { font-size: 0.93rem; }
+        /* ── Jobs / Events ── */
+        .job-card, .event-card { padding: 12px; border-radius: 13px; }
+        .job-card h3 { font-size: 0.9rem; }
 
-        /* ── الدردشة ── */
+        /* ── Chat ── */
         .chat-layout {
-          flex-direction: column;
-          height: calc(100svh - 110px);
+          flex-direction: column !important;
+          height: calc(100svh - 108px);
           border-radius: 0; border: none; box-shadow: none;
         }
         .chat-sidebar {
-          width: 100%; border-left: none;
-          border-bottom: 1.5px solid var(--border);
-          max-height: 96px; padding: 0; flex-shrink: 0;
+          width: 100% !important;
+          border-left: none !important;
+          border-bottom: 1px solid var(--border);
+          max-height: 94px; padding: 0; flex-shrink: 0;
         }
-        .chat-sidebar-header { display: none; }
-        .chat-sidebar-search { display: none; }
-        #chat-users-list-container { padding: 6px 10px; gap: 7px; }
+        .chat-sidebar-header { display: none !important; }
+        .chat-sidebar-search { display: none !important; }
+        #chat-users-list-container { padding: 5px 8px; gap: 6px; flex-wrap: nowrap; }
         .chat-user-item {
-          flex-direction: column; width: 62px; min-width: 62px; max-width: 62px;
-          padding: 5px 3px; border-bottom: none; border-radius: 10px;
-          align-items: center; text-align: center; gap: 3px;
+          flex-direction: column !important;
+          width: 60px; min-width: 60px; max-width: 60px;
+          padding: 4px 2px; border-bottom: none !important;
+          border-radius: 10px; align-items: center; text-align: center; gap: 2px;
         }
-        .chat-user-item.active-chat { background: rgba(32,59,95,0.09); border-right: none; }
-        .chat-user-avatar { width: 36px; height: 36px; }
-        .chat-user-role { display: none; }
-        .chat-user-name { font-size: 0.65rem; line-height: 1.25; }
-        .chat-unread-dot { top: 3px; right: 4px; }
-        .message-bubble { max-width: 86%; font-size: 0.86rem; }
-        .chat-input-area { padding: 7px 10px; }
-        #chat-message-input { font-size: 0.88rem; padding: 9px 12px; }
+        .chat-user-item.active-chat { background: rgba(32,59,95,0.09) !important; border-right: none !important; }
+        .chat-user-avatar { width: 34px !important; height: 34px !important; }
+        .chat-user-role { display: none !important; }
+        .chat-user-name { font-size: 0.62rem; line-height: 1.2; }
+        .message-bubble { max-width: 87%; font-size: 0.85rem; }
+        .chat-input-area { padding: 6px 8px; }
+        #chat-message-input { font-size: 0.87rem; padding: 9px 11px; }
 
-        /* ── البروفايل ── */
-        .profile-stats { gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .profile-card { padding: 18px 13px !important; }
-        #profile-avatar-container img { width: 82px !important; height: 82px !important; }
-        .follow-stats { justify-content: center !important; gap: 8px !important; flex-wrap: wrap !important; }
-        .follow-stats button { padding: 7px 13px !important; font-size: 0.8rem !important; }
+        /* ── Profile ── */
+        .profile-card { padding: 16px 12px !important; }
+        #profile-avatar-container img { width: 80px !important; height: 80px !important; }
+        .profile-stats {
+          gap: 10px; flex-wrap: wrap; justify-content: center;
+        }
+        .follow-stats {
+          justify-content: center !important;
+          gap: 8px !important;
+          flex-wrap: wrap !important;
+        }
+        .follow-stats button { padding: 7px 12px !important; font-size: 0.79rem !important; }
 
-        /* ── المودالات ── */
-        .modal-content { padding: 18px 14px; border-radius: 18px; }
-        .fol-modal-box { border-radius: 20px 20px 0 0; max-height: 90vh; width: 100% !important; }
+        /* ── Modals ── */
+        .modal-overlay { align-items: flex-end !important; padding: 0 !important; }
+        .modal-content {
+          padding: 18px 14px; border-radius: 20px 20px 0 0 !important;
+          width: 100% !important; max-width: 100% !important;
+          max-height: 90vh; overflow-y: auto;
+        }
         .fol-modal-overlay { align-items: flex-end !important; }
+        .fol-modal-box {
+          border-radius: 20px 20px 0 0 !important;
+          max-height: 90vh; width: 100% !important;
+        }
 
-        /* ── لوحة الإدارة ── */
-        .dev-tab-btn { padding: 10px 11px !important; font-size: 0.79rem !important; }
-        #admin-users-table { font-size: 0.79rem; }
-        #admin-users-table td, #admin-users-table th { padding: 7px 6px; }
-        #tester-role-switcher { bottom: 66px; left: 8px; min-width: 158px; }
+        /* ── Admin ── */
+        .dev-tab-btn { padding: 10px 10px !important; font-size: 0.78rem !important; }
+        #admin-users-table { font-size: 0.78rem; }
+        #admin-users-table td, #admin-users-table th { padding: 6px 5px; }
+        #tester-role-switcher { bottom: 64px; left: 8px; min-width: 155px; }
 
-        /* ── الأقسام الجديدة ── */
+        /* ── New Sections ── */
         .section-view-card { border-radius: 14px !important; }
-        .roadmap-step-card { padding: 12px 13px !important; }
-        .insta-link { font-size: 0.82rem; }
+        .roadmap-step-card { padding: 11px 12px !important; }
+        .insta-link { font-size: 0.81rem; }
 
-        /* ── الكروت العامة ── */
-        .card { padding: 14px; border-radius: 14px; }
-        h3 { font-size: 1rem; }
+        /* ── Cards ── */
+        .card { padding: 13px; border-radius: 13px; }
+        h3 { font-size: 0.98rem; }
+        img { max-width: 100%; height: auto; }
+
+        /* ── Input fields ── */
+        .input-field { padding: 11px 14px; font-size: 0.9rem; }
+        .btn { padding: 10px 18px; font-size: 0.88rem; }
+
+        /* ── Profile view ── */
+        #profile-view .card { border-radius: 16px; }
+        .profile-info-grid {
+          grid-template-columns: 1fr !important;
+          gap: 8px;
+        }
+
+        /* ── Events/Jobs cards ── */
+        .event-card .card-actions,
+        .job-card .card-actions {
+          flex-wrap: wrap;
+          gap: 6px;
+        }
+
+        /* ── Search drop on mobile ── */
+        .search-drop { border-radius: 14px; }
+        .sr-filters { gap: 5px; padding: 8px 10px; }
+        .sr-chip { padding: 4px 10px; font-size: 0.72rem; }
+
+        /* ── Follow modal chips ── */
+        .fol-chip { padding: 3px 9px; font-size: 0.7rem; }
+
+        /* ── Tester widget ── */
+        #tester-role-switcher { font-size: 0.78rem; }
+
+        /* ── Scrollbars hidden on mobile ── */
+        * { scrollbar-width: none; }
+        *::-webkit-scrollbar { display: none; }
+
+        /* ── Section cards ── */
+        .section-view-card { margin-bottom: 12px !important; }
+
+        /* ── Typography ── */
+        p { font-size: 0.88rem; line-height: 1.65; }
+        .card h3, .card h4 { font-size: 0.96rem; }
       }
 
-      /* ── هواتف صغيرة جداً (< 400px) ── */
-      @media (max-width: 400px) {
-        nav { padding: 0 8px; height: 50px; }
-        .nav-brand img { height: 34px; }
-        .nav-links { height: 56px; }
-        .nav-links a span { font-size: 0.52rem; }
+      /* ── Very small phones ≤ 390px ── */
+      @media (max-width: 390px) {
+        nav { padding: 0 8px; height: 48px; }
+        .nav-brand img { height: 32px; }
+        .nav-links { height: 54px; }
         .nav-links a i { font-size: 1.1rem; }
-        #hamburger-menu { width: 85vw; }
-
-        .post-action-btn { padding: 5px 7px; font-size: 0.72rem; }
-        .message-bubble { max-width: 91%; }
-        .chat-user-item { width: 56px; min-width: 56px; }
-
-        .fol-modal-box { border-radius: 18px 18px 0 0; }
-        #profile-avatar-container img { width: 74px !important; height: 74px !important; }
+        .nav-links a span { font-size: 0.5rem !important; }
+        #nav-avatar { width: 26px !important; height: 26px !important; }
 
         .card { padding: 11px; }
-        .hero-text h2 { font-size: 0.95rem; }
-        .hero-text p { font-size: 0.78rem; }
+        .post-card { padding: 11px; }
+        .hero-text h2 { font-size: 0.93rem; }
+        .message-bubble { max-width: 91%; }
+        .chat-user-item { width: 54px; min-width: 54px; max-width: 54px; }
+        #dashboard-users-list .sidebar-member { min-width: 64px; max-width: 64px; }
+        #hamburger-menu { width: 82vw; max-width: 275px; }
+        #profile-avatar-container img { width: 72px !important; height: 72px !important; }
+        .follow-stats button { padding: 6px 10px !important; font-size: 0.75rem !important; }
+      }
 
-        #dashboard-users-list .sidebar-member { min-width: 66px; max-width: 66px; }
+      /* ══════════════════════════════════════
+         MOBILE POLISH — تجميل شامل للجوال
+         ══════════════════════════════════════ */
+      @media (max-width: 768px) {
+
+        /* ── Sidebar مخفي على موبايل (يظهر في الداشبورد كـ section منفصل) ── */
+        .dashboard-sidebar { display: none !important; }
+
+        /* ── Typography ── */
+        h2 { font-size: 1.15rem !important; }
+        h3 { font-size: 1rem !important; }
+        h4 { font-size: 0.92rem !important; }
+
+        /* ── Inputs & buttons ── */
+        .input-field { padding: 11px 13px; font-size: 0.9rem; }
+        .btn { padding: 10px 16px; font-size: 0.87rem; }
+
+        /* ── Post compose ── */
+        .post-input-wrapper textarea { font-size: 0.87rem; min-height: 65px; }
+
+        /* ── Admin tabs — horizontal scroll ── */
+        .dev-tabs-row {
+          overflow-x: auto !important;
+          flex-wrap: nowrap !important;
+          scrollbar-width: none;
+          padding-bottom: 2px;
+        }
+        .dev-tabs-row::-webkit-scrollbar { display: none; }
+        .dev-tab-btn { flex-shrink: 0 !important; white-space: nowrap !important; }
+
+        /* ── Section cards ── */
+        .section-view-card { padding: 16px 13px !important; }
+        .roadmap-step-card { margin-bottom: 10px !important; }
+        .endorsement-card  { padding: 12px 13px; }
+
+        /* ── Tester stats grid ── */
+        .tester-sys-stats {
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 8px !important;
+        }
+
+        /* ── Liked avatars smaller ── */
+        .liked-avatar-img { width: 22px !important; height: 22px !important; }
+
+        /* ── Fol modal chips ── */
+        .fol-chip { padding: 4px 10px; font-size: 0.72rem; }
+
+        /* ── Toast full width ── */
+        #toast-container { width: calc(100% - 20px); }
+
+        /* ── Completion bar text ── */
+        .completion-tip { font-size: 0.77rem; }
+
+        /* ── Profile ── */
+        .profile-section-title { font-size: 0.88rem; }
+        .profile-skills { gap: 6px; }
       }
 
       /* ===== Follow Modal ===== */
@@ -1709,6 +1971,64 @@
       [data-theme="dark"] .fol-modal-search { background: #1a2535; }
       [data-theme="dark"] .fol-tab.fol-tab-active { background: #1a2535; }
 
+
+      /* ── Safe responsive overrides ── */
+      img { max-width: 100%; height: auto; }
+      table { max-width: 100%; }
+      pre, code { white-space: pre-wrap; word-break: break-word; }
+      iframe { max-width: 100%; }
+
+      /* ===== Talent Search (للشركات) ===== */
+      .talent-card {
+        display: flex; align-items: center; gap: 14px;
+        padding: 14px 16px; border-radius: 14px;
+        border: 1px solid var(--border); background: var(--surface);
+        margin-bottom: 10px; transition: 0.2s; cursor: pointer;
+      }
+      .talent-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(32,59,95,0.1); transform: translateY(-1px); }
+      .talent-card img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0; }
+      .talent-card-info { flex: 1; min-width: 0; }
+      .talent-card-name { font-weight: 700; color: var(--primary); font-size: 0.95rem; margin-bottom: 2px; }
+      .talent-card-meta { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 5px; }
+      .talent-card-skills { display: flex; flex-wrap: wrap; gap: 4px; }
+      .talent-skill-pill { background: #e3f2fd; color: #1565c0; border-radius: 20px; padding: 2px 9px; font-size: 0.7rem; font-weight: 600; }
+      .talent-filter-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+      .talent-filter-select {
+        padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+        font-family: "Cairo", sans-serif; font-size: 0.85rem; background: var(--surface);
+        color: var(--text-main); cursor: pointer; outline: none; transition: 0.15s;
+      }
+      .talent-filter-select:focus { border-color: var(--primary); }
+      .talent-search-input {
+        flex: 1; min-width: 180px; padding: 9px 16px;
+        border: 1.5px solid var(--border); border-radius: 10px;
+        font-family: "Cairo", sans-serif; font-size: 0.9rem;
+        background: var(--surface); color: var(--text-main); outline: none; transition: 0.15s;
+      }
+      .talent-search-input:focus { border-color: var(--primary); }
+      .talent-ws-available { color: #2e7d32; font-weight: 700; }
+      .talent-ws-training  { color: #e65100; }
+      .talent-ws-open      { color: #1565c0; }
+      [data-theme="dark"] .talent-card { background: #1a2535 !important; border-color: #2a3a50; }
+      [data-theme="dark"] .talent-filter-select { background: #1a2535; color: var(--text-main); border-color: #2a3a50; }
+      [data-theme="dark"] .talent-search-input  { background: #1a2535; color: var(--text-main); border-color: #2a3a50; }
+      [data-theme="dark"] .talent-skill-pill { background: #1e3560; color: #7ab3e8; }
+
+      /* ===== Research Section ===== */
+      .research-card {
+        border: 1px solid var(--border); border-radius: 14px;
+        padding: 18px 20px; background: var(--surface);
+        margin-bottom: 12px; transition: 0.2s; position: relative;
+      }
+      .research-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(32,59,95,0.08); }
+      .research-card h4 { color: var(--primary); margin: 0 0 6px; font-size: 0.95rem; }
+      .research-card p  { color: var(--text-muted); font-size: 0.83rem; line-height: 1.6; margin: 0 0 10px; }
+      .research-badge {
+        display: inline-flex; align-items: center; gap: 5px;
+        background: #e8f4fd; color: #1565c0; border-radius: 8px;
+        padding: 3px 10px; font-size: 0.72rem; font-weight: 700; margin-bottom: 6px;
+      }
+      [data-theme="dark"] .research-badge { background: #1e3560; color: #7ab3e8; }
     </style>
   </head>
   <body>
@@ -1901,29 +2221,25 @@
             >0</span
           >
         </a>
-        <a id="btn-notifications">
-          <i class="fas fa-bell"></i> <span>الإشعارات</span>
-          <span
-            id="notif-badge"
-            class="notification-badge"
-            style="display: none; background: var(--secondary); color: white"
-            >0</span
-          >
+        <div style="position:relative; flex:1; display:flex; align-items:stretch;">
+          <a id="btn-notifications" style="flex:1;">
+            <i class="fas fa-bell"></i> <span>الإشعارات</span>
+            <span
+              id="notif-badge"
+              class="notification-badge"
+              style="display: none; background: var(--secondary); color: white"
+              >0</span
+            >
+          </a>
           <div class="notif-dropdown" id="notif-dropdown">
             <div class="notif-header">الإشعارات الحديثة</div>
             <div class="notif-list" id="notif-list">
-              <div
-                style="
-                  padding: 20px;
-                  text-align: center;
-                  color: var(--text-muted);
-                "
-              >
+              <div style="padding:20px; text-align:center; color:var(--text-muted);">
                 لا توجد إشعارات
               </div>
             </div>
           </div>
-        </a>
+        </div>
         <a
           onclick="navigate('admin-view')"
           id="link-admin"
@@ -1983,6 +2299,12 @@
       </div>
       <div class="hm-item" onclick="closeHamburger(); navigate('faq-view')">
         <i class="fas fa-question-circle"></i> أسئلة شائعة
+      </div>
+      <div class="hm-item company-only" onclick="closeHamburger(); navigate('talent-view')" style="display:none;">
+        <i class="fas fa-binoculars" style="color:#2e5cb8;"></i> بحث عن مواهب
+      </div>
+      <div class="hm-item" onclick="closeHamburger(); navigate('research-view')">
+        <i class="fas fa-flask" style="color:#2e6b4f;"></i> الأبحاث العلمية
       </div>
     </div>
 
@@ -2336,7 +2658,7 @@
         class="card text-center"
         style="padding: 40px 20px; border-top: 6px solid var(--primary)"
       >
-        <div class="profile-avatar-container">
+        <div class="profile-avatar-container" style="position:relative; display:inline-block;">
           <img
             id="profile-avatar"
             src=""
@@ -2356,6 +2678,16 @@
           >
             <i class="fas fa-camera"></i>
           </div>
+          <!-- زر حذف الصورة — يظهر فقط لصاحب الحساب وعنده صورة -->
+          <button id="btn-delete-avatar" onclick="deleteProfileAvatar()"
+            style="display:none; position:absolute; top:-6px; right:-6px;
+                   background:var(--danger); color:white; border:none;
+                   width:24px; height:24px; border-radius:50%; cursor:pointer;
+                   font-size:0.65rem; align-items:center; justify-content:center;
+                   box-shadow:0 2px 8px rgba(0,0,0,0.25); transition:0.15s; z-index:2;"
+            title="حذف الصورة الشخصية">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
 
         <h2 id="profile-name" style="margin-bottom: 5px; color: var(--primary)">
@@ -2920,6 +3252,8 @@
         if (viewId === "faq-view") loadFAQ();
         if (viewId === "achievements-view") loadAchievements();
         if (viewId === "success-view") loadStories();
+        if (viewId === "talent-view") initTalentSearch();
+        if (viewId === "research-view") loadResearch();
         document.getElementById("notif-dropdown")?.classList.remove("show");
         window.scrollTo({ top: 0, behavior: "smooth" });
       };
@@ -3173,21 +3507,31 @@
               (snap) => {
                 const badge = document.getElementById("chat-badge");
                 unreadSendersSet.clear();
+                let unreadNames = new Map(); // senderId → senderName
                 if (snap.size > 0) {
                   badge.style.display = "flex";
                   badge.innerText = snap.size;
                   snap.forEach((doc) => {
-                    unreadSendersSet.add(doc.data().senderId);
+                    const d = doc.data();
+                    unreadSendersSet.add(d.senderId);
+                    if (d.senderName) unreadNames.set(d.senderId, d.senderName);
                   });
+                  // Show tooltip with sender names on the chat nav link
+                  const senderNames = [...unreadNames.values()].slice(0,3).join('، ');
+                  const linkChat = document.getElementById('link-chat');
+                  if (linkChat) linkChat.title = `رسائل من: ${senderNames}`;
+                  // Toast only for new messages
                   snap.docChanges().forEach((change) => {
-                    if (change.type === "added")
-                      showToast(
-                        `رسالة جديدة من ${change.doc.data().senderName}`,
-                        "info",
-                      );
+                    if (change.type === "added") {
+                      const d = change.doc.data();
+                      if (d.senderId !== auth.currentUser?.uid)
+                        showToast(`💬 ${d.senderName || 'رسالة جديدة'}`, "info");
+                    }
                   });
                 } else {
                   badge.style.display = "none";
+                  const linkChat = document.getElementById('link-chat');
+                  if (linkChat) linkChat.title = 'الرسائل';
                 }
                 renderUsersLists();
               },
@@ -3616,6 +3960,19 @@
         if (currentProfileViewId === auth.currentUser.uid)
           document.getElementById("profile-image-input").click();
       };
+
+      window.deleteProfileAvatar = async function() {
+        if (!confirm("هل تريد حذف صورتك الشخصية؟")) return;
+        try {
+          await updateDoc(doc(db, "users", auth.currentUser.uid), { avatarUrl: "" });
+          currentUserData.avatarUrl = "";
+          const fallback = getAvatar(currentUserData.name, "");
+          document.getElementById("profile-avatar").src = fallback;
+          document.getElementById("nav-avatar").src = fallback;
+          document.getElementById("btn-delete-avatar").style.display = "none";
+          showToast("تم حذف الصورة الشخصية");
+        } catch(e) { console.error(e); showToast("حدث خطأ", "info"); }
+      };
       const imageInput = document.getElementById("profile-image-input");
       const cropModal = document.getElementById("crop-modal");
       const cropImage = document.getElementById("crop-image");
@@ -3666,7 +4023,9 @@
               document.getElementById("profile-avatar").src = newAvatarUrl;
               document.getElementById("nav-avatar").src = newAvatarUrl;
               currentUserData.avatarUrl = newAvatarUrl;
-              showToast("تم تحديث صورتك بنجاح");
+              const delBtn = document.getElementById("btn-delete-avatar");
+              if (delBtn) delBtn.style.display = "flex";
+              showToast("تم تحديث صورتك بنجاح ✓");
             } catch (err) {
               showToast("حدث خطأ", "info");
             }
@@ -3852,7 +4211,23 @@
               const delBtn = canDelete
                 ? `<button class="btn btn-text" style="color:var(--danger); padding:0;" onclick="deleteEvent('${docSnap.id}')"><i class="fas fa-trash"></i></button>`
                 : "";
-              container.innerHTML += `<div class="card" style="border-right: 5px solid var(--primary);"><div style="display:flex; justify-content:space-between; align-items:flex-start;"><div><h3 style="margin-top:0; color:var(--primary);">${ev.title}</h3><p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:10px;"><i class="fas fa-clock"></i> ${dStr} &nbsp; | &nbsp; <i class="fas fa-map-marker-alt"></i> ${ev.location}</p></div>${delBtn}</div><p style="white-space: pre-wrap; margin-bottom: 20px;">${ev.description}</p>${actionBtn}</div>`;
+              // Show attendees list for publisher or admin
+              const canSeeAttendees = currentUserData.role === 'admin' || currentUserData.role === 'tester' || ev.publisherId === auth.currentUser.uid;
+              const attendeeCount = (ev.attendees||[]).length;
+              const attendeeBtn = canSeeAttendees && attendeeCount > 0
+                ? `<button class="btn btn-text" style="font-size:0.78rem;padding:4px 10px;color:var(--primary);margin-top:8px;" onclick="showEventAttendees('${docSnap.id}','${ev.title}')"><i class="fas fa-users"></i> عرض المسجلين (${attendeeCount})</button>`
+                : '';
+              container.innerHTML += `<div class="card event-card" style="border-right:5px solid var(--primary);">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;">
+                  <div style="flex:1;min-width:0;">
+                    <h3 style="margin:0 0 6px;color:var(--primary);font-size:1rem;">${ev.title}</h3>
+                    <p style="color:var(--text-muted);font-size:0.82rem;margin:0 0 8px;"><i class="fas fa-clock"></i> ${dStr} &nbsp;|&nbsp; <i class="fas fa-map-marker-alt"></i> ${ev.location}</p>
+                  </div>
+                  <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">${delBtn}</div>
+                </div>
+                <p style="white-space:pre-wrap;margin-bottom:14px;font-size:0.88rem;line-height:1.65;">${ev.description}</p>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">${actionBtn}${attendeeBtn}</div>
+              </div>`;
             });
           },
         );
@@ -3883,6 +4258,36 @@
       };
       window.deleteEvent = async function (id) {
         if (confirm("حذف الفعالية؟")) await deleteDoc(doc(db, "events", id));
+      };
+
+      window.showEventAttendees = async function(eventId, eventTitle) {
+        try {
+          const snap = await getDoc(doc(db, 'events', eventId));
+          if (!snap.exists()) return;
+          const attendeeIds = snap.data().attendees || [];
+          if (!attendeeIds.length) { showToast('لا يوجد مسجلون بعد', 'info'); return; }
+          const users = await Promise.all(attendeeIds.slice(0,30).map(uid => _resolveUser(uid)));
+          const valid = users.filter(Boolean);
+          const roleMap = { student:'طالب', graduate:'خريج', company:'مؤسسة', admin:'إدارة', instructor:'مدرس' };
+          const html = `<div style="max-height:60vh;overflow-y:auto;">
+            <h4 style="margin:0 0 14px;color:var(--primary);"><i class="fas fa-users" style="color:var(--secondary);margin-left:6px;"></i>المسجلون في "${eventTitle}" (${attendeeIds.length})</h4>
+            ${valid.map(u => `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="closeModal();setTimeout(()=>viewProfile('${u.uid}'),80)">
+              <img src="${getAvatar(u.name,u.avatarUrl)}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--border);">
+              <div>
+                <div style="font-weight:700;color:var(--primary);font-size:0.88rem;">${u.name}</div>
+                <div style="font-size:0.74rem;color:var(--text-muted);">${roleMap[u.role]||u.role}</div>
+              </div>
+            </div>`).join('')}
+          </div>`;
+          const modal = document.createElement('div');
+          modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;';
+          modal.innerHTML = `<div style="background:var(--surface);border-radius:18px;padding:20px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+            ${html}
+            <button onclick="this.closest('[style*=fixed]').remove()" class="btn btn-primary" style="margin-top:14px;"><i class="fas fa-times"></i> إغلاق</button>
+          </div>`;
+          modal.onclick = e => { if (e.target === modal) modal.remove(); };
+          document.body.appendChild(modal);
+        } catch(e) { console.error(e); showToast('تعذّر تحميل القائمة', 'info'); }
       };
 
       window.toggleFollow = async function () {
@@ -4033,6 +4438,9 @@
             document.getElementById("btn-add-portfolio").style.display = "inline-block";
             document.getElementById("btn-add-endorsement").style.display = "none";
             document.getElementById("add-endorsement-form").style.display = "none";
+            // زر حذف الصورة
+            const delAvatarBtn = document.getElementById("btn-delete-avatar");
+            if (delAvatarBtn) delAvatarBtn.style.display = data.avatarUrl ? "flex" : "none";
 
             document.getElementById("profile-bio-input").value = data.bio || "";
             document.getElementById("profile-experience-input").value = data.experience || "";
@@ -4157,33 +4565,60 @@
       };
 
       function loadPortfolio(userId) {
-        getDocs(
-          query(
-            collection(db, "portfolio"),
-            where("userId", "==", userId),
-            orderBy("createdAt", "desc"),
-          ),
-        ).then((snapshot) => {
-          const container = document.getElementById("portfolio-container");
-          container.innerHTML = "";
-          if (snapshot.empty) {
-            container.innerHTML =
-              '<p style="color:var(--text-muted); width:100%; text-align:center; grid-column: 1 / -1;">لم يتم إضافة أعمال بعد.</p>';
-            return;
-          }
-          snapshot.forEach((docSnap) => {
-            const port = docSnap.data();
-            const imgHtml = port.imageUrl
-              ? `<img src="${port.imageUrl}" class="portfolio-img">`
-              : `<div class="portfolio-img" style="display:flex; align-items:center; justify-content:center; background:#e1e3e8; color:var(--text-muted);"><i class="fas fa-folder-open fa-3x"></i></div>`;
-            const delBtn =
-              (auth.currentUser && userId === auth.currentUser.uid) ||
-              currentUserData.role === "tester"
-                ? `<button onclick="deletePortfolio('${docSnap.id}')" style="position:absolute; top:10px; right:10px; background:white; color:var(--danger); border:none; padding:5px; border-radius:5px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.2);"><i class="fas fa-trash"></i></button>`
-                : "";
-            container.innerHTML += `<div class="portfolio-item" style="position:relative;">${imgHtml}${delBtn}<div class="portfolio-info"><h4>${port.title}</h4><p>${port.description}</p></div></div>`;
+        const container = document.getElementById("portfolio-container");
+        if (!container) return;
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:28px;color:var(--text-muted);"><i class="fas fa-spinner fa-spin fa-2x"></i></div>';
+        // بدون orderBy لتجنب مشكلة الـ composite index في Firestore
+        getDocs(query(collection(db, "portfolio"), where("userId", "==", userId)))
+          .then((snapshot) => {
+            container.innerHTML = "";
+            if (snapshot.empty) {
+              container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--text-muted);">
+                <i class="fas fa-folder-open fa-3x" style="opacity:0.2;display:block;margin-bottom:12px;"></i>
+                <strong>لم يتم إضافة أعمال بعد</strong>
+              </div>`;
+              return;
+            }
+            const canEdit = auth.currentUser && (
+              userId === auth.currentUser.uid ||
+              currentUserData?.role === "tester" ||
+              currentUserData?.role === "admin"
+            );
+            // ترتيب في JS بدل Firestore
+            const docs = snapshot.docs.sort((a, b) => {
+              const ta = a.data().createdAt?.toMillis?.() || 0;
+              const tb = b.data().createdAt?.toMillis?.() || 0;
+              return tb - ta;
+            });
+            docs.forEach((docSnap) => {
+              const port = docSnap.data();
+              const div = document.createElement('div');
+              div.className = 'portfolio-item';
+              const imgEl = port.imageUrl
+                ? `<img src="${port.imageUrl}" class="portfolio-img" loading="lazy"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">`
+                : '';
+              const placeholder = `<div class="portfolio-img-placeholder" style="${port.imageUrl ? 'display:none' : ''}">
+                <i class="fas fa-folder-open fa-2x"></i></div>`;
+              const delBtn = canEdit
+                ? `<button class="portfolio-del-btn" onclick="deletePortfolio('${docSnap.id}')">
+                    <i class="fas fa-trash"></i></button>`
+                : '';
+              div.innerHTML = `${imgEl}${placeholder}${delBtn}
+                <div class="portfolio-info">
+                  <h4>${port.title || 'بدون عنوان'}</h4>
+                  <p>${port.description || ''}</p>
+                </div>`;
+              container.appendChild(div);
+            });
+          })
+          .catch(e => {
+            console.error("Portfolio error:", e);
+            container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:28px;color:var(--danger);">
+              <i class="fas fa-exclamation-circle fa-2x" style="display:block;margin-bottom:10px;"></i>
+              تعذّر تحميل المعرض — تحقق من الاتصال
+            </div>`;
           });
-        });
       }
       window.deletePortfolio = async function (id) {
         if (confirm("حذف العمل من المعرض؟")) {
@@ -5186,30 +5621,131 @@
           </div>`).join('');
       }
 
-      // ===== FAQ data =====
-      const faqs = [
-        { q: 'كيف أنشئ حساباً على صيت؟', a: 'اضغط "إنشاء حساب مجاني" في صفحة الدخول، أدخل اسمك الرباعي والبريد الإلكتروني وكلمة مرور، ثم اختر نوع حسابك (طالب/خريج/مؤسسة).' },
-        { q: 'كيف أحصل على النقاط؟', a: 'تكسب نقاطاً عند استكمال البروفايل (+5)، نشر منشور (+5)، الحصول على توصية من مدرس (+10). النقاط تعكس نشاطك على المنصة.' },
-        { q: 'ما الفرق بين طالب وخريج؟', a: 'حساب الطالب للمنتسبين الحاليين للقسم، بينما حساب الخريج يمنح عضوية خاصة للمتخرجين مع إمكانية إضافة تجارب مهنية أوسع.' },
-        { q: 'كيف أطلب صلاحية مدرس؟', a: 'من بروفايلك الشخصي، اضغط زر "طلب صلاحية مدرس". سيُراجع طلبك من إدارة المنصة وتُعلَم عبر الإشعارات.' },
-        { q: 'كيف أتواصل مع شخص آخر؟', a: 'ادخل على بروفايله واضغط "مراسلة"، أو استخدم قسم الرسائل مباشرة للبحث عن اسمه.' },
-        { q: 'هل معلوماتي خاصة؟', a: 'المنصة مخصصة لأبناء القسم. بياناتك مرئية للمستخدمين المسجلين فقط، والرسائل خاصة بين طرفيها.' },
-        { q: 'كيف أحذف منشوراً أو تعليقاً؟', a: 'اضغط على أيقونة القمامة التي تظهر عند منشوراتك وتعليقاتك الخاصة.' },
+      // ===== FAQ — Firestore CRUD =====
+      const _defaultFaqs = [
+        { q: 'كيف أنشئ حساباً على صيت؟', a: 'اضغط "إنشاء حساب مجاني" في صفحة الدخول، أدخل اسمك الرباعي والبريد الإلكتروني وكلمة مرور، ثم اختر نوع حسابك (طالب/خريج/مؤسسة).', order: 1 },
+        { q: 'كيف أحصل على النقاط؟', a: 'تكسب نقاطاً عند استكمال البروفايل (+5)، نشر منشور (+5)، الحصول على توصية من مدرس (+10). النقاط تعكس نشاطك على المنصة.', order: 2 },
+        { q: 'ما الفرق بين طالب وخريج؟', a: 'حساب الطالب للمنتسبين الحاليين للقسم، بينما حساب الخريج يمنح عضوية خاصة للمتخرجين مع إمكانية إضافة تجارب مهنية أوسع.', order: 3 },
+        { q: 'كيف أطلب صلاحية مدرس؟', a: 'من بروفايلك الشخصي، اضغط زر "طلب صلاحية مدرس". سيُراجع طلبك من إدارة المنصة وتُعلَم عبر الإشعارات.', order: 4 },
+        { q: 'كيف أتواصل مع شخص آخر؟', a: 'ادخل على بروفايله واضغط "مراسلة"، أو استخدم قسم الرسائل مباشرة للبحث عن اسمه.', order: 5 },
+        { q: 'هل معلوماتي خاصة؟', a: 'المنصة مخصصة لأبناء القسم. بياناتك مرئية للمستخدمين المسجلين فقط، والرسائل خاصة بين طرفيها.', order: 6 },
+        { q: 'كيف أحذف منشوراً أو تعليقاً؟', a: 'اضغط على أيقونة القمامة التي تظهر عند منشوراتك وتعليقاتك الخاصة.', order: 7 },
       ];
 
-      function loadFAQ() {
+      async function loadFAQ() {
+        const el = document.getElementById('faq-list');
+        const canEdit = currentUserData?.role === 'admin' || currentUserData?.role === 'tester';
+        const addBtn = document.getElementById('btn-add-faq');
+        if (addBtn) addBtn.style.display = canEdit ? 'inline-flex' : 'none';
+        if (!el) return;
+        el.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-muted);"><i class="fas fa-spinner fa-spin"></i></div>';
+        try {
+          let snap = await getDocs(query(collection(db, 'faq'), orderBy('order', 'asc')));
+          // Seed defaults if empty
+          if (snap.empty && canEdit) {
+            await Promise.all(_defaultFaqs.map(f =>
+              addDoc(collection(db, 'faq'), { ...f, createdAt: serverTimestamp() })
+            ));
+            snap = await getDocs(query(collection(db, 'faq'), orderBy('order', 'asc')));
+          }
+          if (snap.empty) {
+            el.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-muted);">لا توجد أسئلة بعد.</div>';
+            return;
+          }
+          _renderFAQ(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        } catch(e) {
+          console.error(e);
+          // Fallback to defaults if Firestore fails
+          _renderFAQ(_defaultFaqs.map((f,i) => ({ id: String(i), ...f })));
+        }
+      }
+
+      function _renderFAQ(items) {
         const el = document.getElementById('faq-list');
         if (!el) return;
-        el.innerHTML = faqs.map((f, i) => `
-          <div style="border:1px solid var(--border); border-radius:12px; overflow:hidden;">
-            <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'; this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(180deg)':'rotate(0deg)'"
-              style="padding:14px 18px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; background:var(--surface); font-weight:700; color:var(--primary); font-size:0.92rem; transition:0.15s; user-select:none;">
-              <span><i class="fas fa-circle" style="font-size:0.5rem; color:var(--secondary); margin-left:8px; vertical-align:middle;"></i>${f.q}</span>
-              <i class="fas fa-chevron-down faq-arrow" style="color:var(--text-muted); font-size:0.85rem; transition:transform 0.25s;"></i>
+        const canEdit = currentUserData?.role === 'admin' || currentUserData?.role === 'tester';
+        el.innerHTML = items.map((f, i) => `
+          <div style="border:1px solid var(--border); border-radius:13px; overflow:hidden; background:var(--surface);">
+            <div style="padding:14px 16px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+                        font-weight:700; color:var(--primary); font-size:0.9rem; user-select:none; gap:10px;"
+                 onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';
+                          this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(180deg)':'rotate(0deg)'">
+              <span style="flex:1;">
+                <i class="fas fa-circle" style="font-size:0.45rem;color:var(--secondary);margin-left:8px;vertical-align:middle;"></i>
+                ${f.q}
+              </span>
+              <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+                ${canEdit ? `
+                  <button onclick="event.stopPropagation();openEditFaq('${f.id}',this)"
+                    style="background:none;border:none;color:var(--text-muted);cursor:pointer;padding:3px 6px;border-radius:6px;font-size:0.8rem;transition:0.15s;"
+                    onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">
+                    <i class="fas fa-pen"></i>
+                  </button>
+                  <button onclick="event.stopPropagation();deleteFaq('${f.id}')"
+                    style="background:none;border:none;color:var(--text-muted);cursor:pointer;padding:3px 6px;border-radius:6px;font-size:0.8rem;transition:0.15s;"
+                    onmouseover="this.style.color='var(--danger)'" onmouseout="this.style.color='var(--text-muted)'">
+                    <i class="fas fa-trash"></i>
+                  </button>` : ''}
+                <i class="fas fa-chevron-down faq-arrow" style="color:var(--text-muted);font-size:0.82rem;transition:transform 0.25s;"></i>
+              </div>
             </div>
-            <div style="display:none; padding:14px 18px; background:rgba(32,59,95,0.02); border-top:1px solid var(--border); font-size:0.88rem; color:var(--text-main); line-height:1.8;">${f.a}</div>
+            <div style="display:none; padding:12px 16px 14px; border-top:1px solid var(--border);
+                        font-size:0.86rem; color:var(--text-main); line-height:1.85;
+                        background:rgba(32,59,95,0.02);">${f.a}</div>
           </div>`).join('');
       }
+
+      window.openEditFaq = function(id, triggerBtn) {
+        const form = document.getElementById('faq-edit-form');
+        if (!form) return;
+        // Toggle: if already open for this id, close
+        if (form.dataset.editId === id && form.style.display !== 'none') {
+          form.style.display = 'none'; return;
+        }
+        form.dataset.editId = id;
+        // Find current values from rendered DOM
+        const card = triggerBtn.closest('[style*="border-radius:13px"]');
+        const q = card.querySelector('span[style*="flex:1"]').childNodes[1]?.textContent?.trim() || '';
+        const a = card.querySelectorAll('div')[1]?.textContent?.trim() || '';
+        document.getElementById('faq-edit-q').value = q;
+        document.getElementById('faq-edit-a').value = a;
+        // Insert form below this card
+        card.insertAdjacentElement('afterend', form);
+        form.style.display = 'block';
+        document.getElementById('faq-edit-q').focus();
+      };
+
+      window.saveFaqEdit = async function() {
+        const form = document.getElementById('faq-edit-form');
+        const id = form.dataset.editId;
+        const q = document.getElementById('faq-edit-q').value.trim();
+        const a = document.getElementById('faq-edit-a').value.trim();
+        if (!q || !a) { showToast('أكمل السؤال والجواب', 'info'); return; }
+        const btn = form.querySelector('.btn-primary');
+        if (btn) { btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i>'; }
+        try {
+          if (id && id !== 'new') {
+            await updateDoc(doc(db, 'faq', id), { q, a });
+          } else {
+            const snap = await getDocs(collection(db, 'faq'));
+            await addDoc(collection(db, 'faq'), { q, a, order: snap.size + 1, createdAt: serverTimestamp() });
+          }
+          form.style.display = 'none';
+          form.dataset.editId = '';
+          loadFAQ();
+          showToast(id === 'new' ? 'تمت إضافة السؤال ✓' : 'تم التعديل ✓');
+        } catch(e) { console.error(e); showToast('حدث خطأ', 'info'); }
+        finally { if (btn) { btn.disabled=false; btn.innerHTML='<i class="fas fa-save"></i> حفظ'; } }
+      };
+
+      window.deleteFaq = async function(id) {
+        if (!confirm('حذف هذا السؤال؟')) return;
+        try {
+          await deleteDoc(doc(db, 'faq', id));
+          loadFAQ();
+          showToast('تم الحذف');
+        } catch(e) { showToast('حدث خطأ', 'info'); }
+      };
 
       // ===== Achievements CRUD =====
       window.saveAchievement = async function() {
@@ -5217,9 +5753,17 @@
         const year  = document.getElementById('ach-year').value.trim();
         const desc  = document.getElementById('ach-desc').value.trim();
         if (!title || !desc) { showToast('أكمل بيانات الإنجاز', 'info'); return; }
+        const btn = document.querySelector('#add-achievement-form .btn-primary');
+        if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جار الحفظ...'; }
         try {
+          let imageUrl = '';
+          const imgFile = document.getElementById('ach-img')?.files[0];
+          if (imgFile) {
+            showToast('جار رفع الصورة...', 'info');
+            imageUrl = await uploadImageToImgBB(imgFile);
+          }
           await addDoc(collection(db, 'achievements'), {
-            title, year, desc,
+            title, year, desc, imageUrl,
             authorId: auth.currentUser.uid,
             authorName: currentUserData.name,
             createdAt: serverTimestamp(),
@@ -5227,11 +5771,13 @@
           document.getElementById('ach-title').value = '';
           document.getElementById('ach-year').value = '';
           document.getElementById('ach-desc').value = '';
+          if (document.getElementById('ach-img')) document.getElementById('ach-img').value = '';
           document.getElementById('add-achievement-form').style.display = 'none';
           document.getElementById('btn-add-achievement').style.display = 'inline-flex';
           loadAchievements();
-          showToast('تم إضافة الإنجاز!');
-        } catch(e) { console.error(e); showToast('حدث خطأ', 'info'); }
+          showToast('تم إضافة الإنجاز! 🏆');
+        } catch(e) { console.error(e); showToast('حدث خطأ أثناء الحفظ', 'info'); }
+        finally { if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> حفظ'; } }
       };
 
       async function loadAchievements() {
@@ -5247,10 +5793,18 @@
           snap.forEach(d => {
             const a = d.data();
             const canDel = currentUserData.role === 'admin' || currentUserData.role === 'tester';
-            el.innerHTML += `<div style="border:1px solid var(--border); border-radius:14px; padding:18px 20px; background:var(--surface); position:relative;">
-              ${a.year ? `<span style="position:absolute;top:14px;left:14px;background:var(--primary);color:white;border-radius:8px;padding:2px 10px;font-size:0.75rem;font-weight:700;">${a.year}</span>` : ''}
-              ${canDel ? `<button onclick="deleteAchievement('${d.id}')" class="btn btn-text" style="position:absolute;top:10px;left:${a.year?'70':'14'}px;color:var(--danger);padding:4px 8px;"><i class="fas fa-trash-alt"></i></button>` : ''}
-              <h4 style="margin:0 0 8px;color:var(--primary);padding-left:${a.year?'50':'0'}px;"><i class="fas fa-trophy" style="color:var(--secondary);margin-left:6px;"></i>${a.title}</h4>
+            const imgHtml = a.imageUrl
+              ? `<img src="${a.imageUrl}" style="width:100%;max-height:220px;object-fit:cover;border-radius:10px;margin-bottom:14px;display:block;" loading="lazy">`
+              : '';
+            el.innerHTML += `<div style="border:1px solid var(--border); border-radius:14px; padding:18px 20px; background:var(--surface); position:relative; overflow:hidden;">
+              ${imgHtml}
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
+                <h4 style="margin:0 0 8px;color:var(--primary);flex:1;"><i class="fas fa-trophy" style="color:var(--secondary);margin-left:6px;"></i>${a.title}</h4>
+                <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                  ${a.year ? `<span style="background:var(--primary);color:white;border-radius:8px;padding:2px 10px;font-size:0.75rem;font-weight:700;">${a.year}</span>` : ''}
+                  ${canDel ? `<button onclick="deleteAchievement('${d.id}')" class="btn btn-text" style="color:var(--danger);padding:4px 6px;"><i class="fas fa-trash-alt"></i></button>` : ''}
+                </div>
+              </div>
               <p style="margin:0;color:var(--text-main);font-size:0.88rem;line-height:1.7;">${a.desc}</p>
             </div>`;
           });
@@ -5349,6 +5903,298 @@
             showToast("تم حذف المستخدم");
           } catch(e) { console.error(e); }
         }
+      };
+
+      // ===== Talent Search (للشركات) =====
+      let _talentSkillFilter = '';
+
+      window.resetTalentFilters = function() {
+        _talentSkillFilter = '';
+        ['talent-search-text','talent-filter-role','talent-filter-ws'].forEach(id => {
+          const el = document.getElementById(id); if (el) el.value = '';
+        });
+        const sortEl = document.getElementById('talent-filter-sort');
+        if (sortEl) sortEl.value = 'skills';
+        document.querySelectorAll('#talent-skill-chips .sr-chip').forEach(b => b.classList.remove('active'));
+        runTalentSearch();
+      };
+
+      window.initTalentSearch = function() {
+        const skillsCount = {};
+        allUsersCache.forEach(u => {
+          if (u.role !== 'student' && u.role !== 'graduate') return;
+          (u.skills||'').split(',').forEach(s => {
+            const sk = s.trim();
+            if (sk) skillsCount[sk] = (skillsCount[sk]||0) + 1;
+          });
+        });
+        const topSkills = Object.entries(skillsCount).sort((a,b)=>b[1]-a[1]).slice(0,15).map(e=>e[0]);
+        const chipsEl = document.getElementById('talent-skill-chips');
+        if (chipsEl) {
+          chipsEl.innerHTML = topSkills.map(sk =>
+            `<button class="sr-chip" style="margin:2px 4px 2px 0;display:inline-flex;"
+              onclick="setTalentSkill('${sk.replace(/'/g,"\\'")}',this)">${sk}</button>`
+          ).join('');
+        }
+        runTalentSearch();
+      };
+
+      window.setTalentSkill = function(skill, btn) {
+        _talentSkillFilter = (_talentSkillFilter === skill) ? '' : skill;
+        document.querySelectorAll('#talent-skill-chips .sr-chip').forEach(b => b.classList.remove('active'));
+        if (_talentSkillFilter) btn.classList.add('active');
+        runTalentSearch();
+      };
+
+      window.runTalentSearch = function() {
+        const q       = (document.getElementById('talent-search-text')?.value||'').trim().toLowerCase();
+        const role    = document.getElementById('talent-filter-role')?.value  || '';
+        const ws      = document.getElementById('talent-filter-ws')?.value    || '';
+        const sort    = document.getElementById('talent-filter-sort')?.value  || 'skills';
+        const resEl   = document.getElementById('talent-results');
+        const statsEl = document.getElementById('talent-stats');
+        const filtersEl= document.getElementById('talent-active-filters');
+        if (!resEl) return;
+
+        const wsColors = { available:'#2e7d32', training:'#e65100', open:'#1565c0' };
+        const wsLabels = { available:'متاح للعمل', training:'في تدريب', open:'منفتح على الفرص' };
+        const wsIcons  = { available:'🟢', training:'🟠', open:'🔵' };
+        const roleLabel= { student:'طالب', graduate:'خريج' };
+
+        let results = allUsersCache.filter(u => {
+          if (u.role !== 'student' && u.role !== 'graduate') return false;
+          if (role && u.role !== role) return false;
+          if (ws   && u.workStatus !== ws) return false;
+          if (_talentSkillFilter) {
+            if (!(u.skills||'').toLowerCase().includes(_talentSkillFilter.toLowerCase())) return false;
+          }
+          if (!q) return true;
+          return u.name?.toLowerCase().includes(q) ||
+                 (u.skills||'').toLowerCase().includes(q) ||
+                 (u.bio||'').toLowerCase().includes(q) ||
+                 (u.education||'').toLowerCase().includes(q) ||
+                 (u.experience||'').toLowerCase().includes(q);
+        });
+
+        if (sort === 'name') {
+          results.sort((a,b) => (a.name||'').localeCompare(b.name||'', 'ar'));
+        } else {
+          results.sort((a,b) => {
+            if (b.workStatus==='available' && a.workStatus!=='available') return 1;
+            if (a.workStatus==='available' && b.workStatus!=='available') return -1;
+            const sa = (a.skills||'').split(',').filter(s=>s.trim()).length;
+            const sb = (b.skills||'').split(',').filter(s=>s.trim()).length;
+            return sb - sa;
+          });
+        }
+
+        const activeF = [];
+        if (role) activeF.push(roleLabel[role]);
+        if (ws)   activeF.push(wsLabels[ws]);
+        if (_talentSkillFilter) activeF.push(_talentSkillFilter);
+        if (filtersEl) filtersEl.textContent = activeF.length ? 'فلاتر: '+activeF.join(' · ') : '';
+        if (statsEl) statsEl.textContent = results.length
+          ? `${results.length} شخص · ${results.filter(u=>u.workStatus==='available').length} متاح للعمل`
+          : 'لا توجد نتائج';
+
+        if (!results.length) {
+          resEl.innerHTML = `<div style="text-align:center;padding:50px 20px;color:var(--text-muted);">
+            <i class="fas fa-search" style="font-size:3rem;opacity:0.15;display:block;margin-bottom:14px;"></i>
+            <strong>لا توجد نتائج</strong>
+            <button onclick="resetTalentFilters()" class="btn btn-outline"
+              style="width:auto;margin-top:14px;padding:8px 18px;font-size:0.85rem;display:block;margin-left:auto;margin-right:auto;">
+              <i class="fas fa-undo"></i> إعادة ضبط الفلاتر
+            </button>
+          </div>`;
+          return;
+        }
+
+        function escRx5(s){ return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,'\\$&'); }
+
+        resEl.innerHTML = results.map(u => {
+          const av = getAvatar(u.name, u.avatarUrl);
+          const hlName = q
+            ? u.name.replace(new RegExp('('+escRx5(q)+')','gi'),
+                '<mark style="background:#fff3cd;border-radius:2px;padding:0 1px;">$1</mark>')
+            : u.name;
+          const skillsArr = (u.skills||'').split(',').map(s=>s.trim()).filter(Boolean);
+          const skillTags = skillsArr.slice(0,5).map(s => {
+            const isMatch = _talentSkillFilter && s.toLowerCase()===_talentSkillFilter.toLowerCase();
+            return `<span class="talent-skill-pill"
+              style="${isMatch?'background:#fff3cd;color:#b45309;border:1px solid #f59e0b;':''}">${s}</span>`;
+          }).join('');
+          const more = skillsArr.length>5
+            ? `<span class="talent-skill-pill" style="background:var(--bg-body);color:var(--text-muted);">+${skillsArr.length-5}</span>` : '';
+          const wsColor = wsColors[u.workStatus]||'var(--text-muted)';
+          const wsIcon  = wsIcons[u.workStatus] ||'';
+          const wsText  = wsLabels[u.workStatus]||'';
+          const safeName= (u.name||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+          const safeAv  = av.replace(/'/g,"\\'");
+          return `<div class="talent-card" onclick="viewProfile('${u.uid}')">
+            <img src="${av}" alt="${u.name}" loading="lazy">
+            <div class="talent-card-info">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span class="talent-card-name">${hlName}</span>
+                ${wsText?`<span style="font-size:0.7rem;color:${wsColor};font-weight:700;">${wsIcon} ${wsText}</span>`:''}
+              </div>
+              <div class="talent-card-meta">
+                ${roleLabel[u.role]||u.role}${u.education?' &nbsp;·&nbsp; '+u.education.slice(0,35):''}
+              </div>
+              ${u.bio?`<div style="font-size:0.76rem;color:var(--text-muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${u.bio.slice(0,55)}${u.bio.length>55?'…':''}</div>`:''}
+              <div class="talent-card-skills" style="margin-top:5px;">${skillTags}${more}</div>
+            </div>
+            <button class="btn btn-outline"
+              style="flex-shrink:0;padding:7px 11px;font-size:0.82rem;width:auto;align-self:flex-start;"
+              onclick="event.stopPropagation();navigate('chat-view');openChat('${u.uid}','${safeName}','${safeAv}')">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>`;
+        }).join('');
+      }
+      // ===== Research (أبحاث علمية) =====
+      let _allResearch = []; // cache for filtering
+
+      window.saveResearch = async function() {
+        const title    = document.getElementById('res-title')?.value.trim();
+        const authors  = document.getElementById('res-authors')?.value.trim();
+        const year     = document.getElementById('res-year')?.value.trim();
+        const journal  = document.getElementById('res-journal')?.value.trim();
+        const abstract = document.getElementById('res-abstract')?.value.trim();
+        const driveLink= document.getElementById('res-drive')?.value.trim();
+        if (!title || !authors) { showToast('أدخل عنوان البحث والمؤلفين', 'info'); return; }
+        // Validate Google Drive link if provided
+        if (driveLink && !driveLink.includes('drive.google.com') && !driveLink.startsWith('http')) {
+          showToast('الرجاء إدخال رابط Google Drive صحيح', 'info'); return;
+        }
+        const btn = document.querySelector('#add-research-form .btn-primary');
+        if (btn) { btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> جار النشر...'; }
+        try {
+          await addDoc(collection(db, 'research'), {
+            title, authors, year, journal, abstract,
+            driveLink: driveLink || '',
+            uploaderId: auth.currentUser.uid,
+            uploaderName: currentUserData.name,
+            createdAt: serverTimestamp(),
+          });
+          ['res-title','res-authors','res-year','res-journal','res-abstract','res-drive'].forEach(id => {
+            const el = document.getElementById(id); if (el) el.value = '';
+          });
+          document.getElementById('add-research-form').style.display = 'none';
+          document.getElementById('btn-add-research').style.display = 'inline-flex';
+          loadResearch();
+          showToast('تم نشر البحث! 📄');
+        } catch(e) {
+          console.error(e);
+          showToast('حدث خطأ أثناء النشر', 'info');
+        } finally {
+          if (btn) { btn.disabled=false; btn.innerHTML='<i class="fas fa-upload"></i> نشر البحث'; }
+        }
+      };
+
+      function _renderResearchList(items) {
+        const el = document.getElementById('research-list');
+        if (!el) return;
+        if (!items.length) {
+          el.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--text-muted);">
+            <i class="fas fa-flask fa-3x" style="opacity:0.2;display:block;margin-bottom:12px;"></i>
+            لا توجد نتائج
+          </div>`;
+          return;
+        }
+        el.innerHTML = items.map(({id, r}) => {
+          const canDel = currentUserData?.role==='admin' || currentUserData?.role==='tester' || r.uploaderId===auth.currentUser?.uid;
+          const driveBtn = r.driveLink
+            ? `<a href="${r.driveLink}" target="_blank" rel="noopener"
+                style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#e8f5e9;color:#2e7d32;border-radius:10px;font-size:0.8rem;font-weight:700;text-decoration:none;border:1.5px solid #a5d6a7;transition:0.15s;"
+                onmouseover="this.style.background='#c8e6c9'" onmouseout="this.style.background='#e8f5e9'">
+                <i class="fab fa-google-drive"></i> فتح على Drive
+              </a>`
+            : '';
+          const delBtn = canDel
+            ? `<button onclick="deleteResearch('${id}')"
+                style="background:none;border:none;color:var(--danger);cursor:pointer;padding:6px 8px;border-radius:8px;font-size:0.85rem;transition:0.15s;"
+                onmouseover="this.style.background='rgba(239,68,68,0.1)'" onmouseout="this.style.background='none'">
+                <i class="fas fa-trash"></i>
+              </button>`
+            : '';
+          return `<div class="research-card">
+            <div style="display:flex;align-items:flex-start;gap:10px;">
+              <div style="flex-shrink:0;width:42px;height:42px;background:linear-gradient(135deg,#1b3a2d,#2e6b4f);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                <i class="fas fa-file-alt" style="color:#7dffc3;font-size:1rem;"></i>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;flex-wrap:wrap;">
+                  <h4 style="margin:0 0 4px;font-size:0.92rem;line-height:1.4;">${r.title}</h4>
+                  <div style="display:flex;gap:2px;flex-shrink:0;">${delBtn}</div>
+                </div>
+                <p style="margin:0 0 3px;font-size:0.8rem;color:var(--text-muted);">
+                  <i class="fas fa-users" style="font-size:0.7rem;"></i> ${r.authors}
+                </p>
+                ${r.journal ? `<p style="margin:0 0 3px;font-size:0.77rem;color:var(--text-muted);font-style:italic;"><i class="fas fa-book" style="font-size:0.7rem;"></i> ${r.journal}${r.year?' · '+r.year:''}</p>` : (r.year ? `<p style="margin:0 0 3px;font-size:0.77rem;color:var(--text-muted);">${r.year}</p>` : '')}
+                ${r.abstract ? `<p style="margin:6px 0 0;font-size:0.82rem;color:var(--text-main);line-height:1.6;">${r.abstract}</p>` : ''}
+              </div>
+            </div>
+            ${driveBtn ? `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">${driveBtn}</div>` : ''}
+            <div style="margin-top:6px;font-size:0.72rem;color:var(--text-muted);">نشره: ${r.uploaderName}</div>
+          </div>`;
+        }).join('');
+      }
+
+      window.filterResearch = function(q) {
+        const year = document.getElementById('res-filter-year')?.value || '';
+        const ql = (q||'').toLowerCase();
+        const filtered = _allResearch.filter(({r}) => {
+          if (year && r.year !== year) return false;
+          if (!ql) return true;
+          return r.title?.toLowerCase().includes(ql) ||
+                 r.authors?.toLowerCase().includes(ql) ||
+                 r.journal?.toLowerCase().includes(ql) ||
+                 r.abstract?.toLowerCase().includes(ql);
+        });
+        _renderResearchList(filtered);
+      };
+
+      async function loadResearch() {
+        const el = document.getElementById('research-list');
+        const addBtn = document.getElementById('btn-add-research');
+        if (!el) return;
+        if (addBtn && auth.currentUser) addBtn.style.display = 'inline-flex';
+        el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted);"><i class="fas fa-spinner fa-spin fa-2x"></i></div>';
+        try {
+          const snap = await getDocs(query(collection(db, 'research'), orderBy('createdAt','desc')));
+          _allResearch = [];
+          if (!snap.empty) {
+            snap.forEach(d => _allResearch.push({id: d.id, r: d.data()}));
+          }
+          // Populate year filter
+          const years = [...new Set(_allResearch.map(x => x.r.year).filter(Boolean))].sort((a,b)=>b-a);
+          const yearSel = document.getElementById('res-filter-year');
+          if (yearSel) {
+            yearSel.innerHTML = '<option value="">كل السنوات</option>' +
+              years.map(y => `<option value="${y}">${y}</option>`).join('');
+          }
+          if (!_allResearch.length) {
+            el.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--text-muted);">
+              <i class="fas fa-flask fa-3x" style="opacity:0.2;display:block;margin-bottom:12px;"></i>
+              <strong>لم يُضَف أي بحث بعد</strong><br>
+              <span style="font-size:0.83rem;">كن الأول وأضف بحثك!</span>
+            </div>`;
+            return;
+          }
+          _renderResearchList(_allResearch);
+        } catch(e) {
+          console.error(e);
+          el.innerHTML = '<div style="color:var(--danger);text-align:center;padding:20px;"><i class="fas fa-exclamation-circle"></i> تعذّر التحميل</div>';
+        }
+      }
+      window.deleteResearch = async function(id) {
+        if (!confirm('حذف هذا البحث؟')) return;
+        try {
+          await deleteDoc(doc(db, 'research', id));
+          _allResearch = _allResearch.filter(x => x.id !== id);
+          _renderResearchList(_allResearch);
+          showToast('تم الحذف');
+        } catch(e) { showToast('حدث خطأ', 'info'); }
       };
 
       // ===== Mobile Search Overlay =====
@@ -5487,12 +6333,17 @@
             <i class="fas fa-plus"></i> أضف إنجاز
           </button>
         </div>
-        <div id="add-achievement-form" style="display:none; padding:20px; background:#f9fbff; border-bottom:1px solid var(--border);">
+        <div id="add-achievement-form" style="display:none; padding:20px; background:var(--bg-body); border-bottom:1px solid var(--border);">
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
             <input type="text" id="ach-title" class="input-field" placeholder="عنوان الإنجاز" style="margin:0;">
             <input type="text" id="ach-year" class="input-field" placeholder="السنة (مثال: 2024)" style="margin:0;">
           </div>
           <textarea id="ach-desc" class="input-field" rows="2" placeholder="وصف الإنجاز..." style="margin:0 0 10px;"></textarea>
+          <label style="display:flex; align-items:center; gap:8px; margin-bottom:10px; cursor:pointer; font-size:0.85rem; color:var(--text-muted);">
+            <i class="fas fa-image" style="color:var(--primary);"></i>
+            صورة للإنجاز (اختياري):
+            <input type="file" id="ach-img" accept="image/*" style="font-size:0.82rem; flex:1;">
+          </label>
           <div style="display:flex; gap:8px; justify-content:flex-end;">
             <button class="btn btn-text" onclick="document.getElementById('add-achievement-form').style.display='none'; document.getElementById('btn-add-achievement').style.display='inline-flex';">إلغاء</button>
             <button class="btn btn-primary" style="width:auto; padding:9px 20px;" onclick="saveAchievement()"><i class="fas fa-save"></i> حفظ</button>
@@ -5517,30 +6368,64 @@
     <!-- ===== Academic Resources ===== -->
     <div id="resources-view" class="view-section container" style="max-width:860px;">
       <div class="card section-view-card" style="padding:0; overflow:hidden;">
-        <div style="padding:24px 28px; background:linear-gradient(135deg,#1a2f1a,#2e5e2e);">
-          <h2 style="color:white; margin:0 0 4px;"><i class="fas fa-book-open" style="color:#7dd87a;"></i> المصادر الأكاديمية</h2>
-          <p style="color:rgba(255,255,255,0.7); margin:0; font-size:0.88rem;">مواد دراسية وكتب ومقالات مختارة لطلاب العلاقات العامة</p>
+        <!-- Header -->
+        <div style="padding:22px 24px; background:linear-gradient(135deg,#1a2f1a,#2e5e2e);">
+          <h2 style="color:white; margin:0 0 3px; font-size:1.1rem;">
+            <i class="fas fa-book-open" style="color:#7dd87a;"></i> المصادر الأكاديمية
+          </h2>
+          <p style="color:rgba(255,255,255,0.7); margin:0; font-size:0.82rem;">مواد دراسية وكتب ومقالات مختارة لطلاب العلاقات العامة</p>
         </div>
-        <div style="padding:20px;">
-          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;" id="resources-grid">
-            <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px;">
-              <div style="font-size:1.6rem; margin-bottom:10px; color:var(--primary);"><i class="fas fa-file-pdf" style="color:#e53935;"></i></div>
-              <h4 style="margin:0 0 6px; color:var(--primary); font-size:0.9rem;">مبادئ العلاقات العامة</h4>
-              <p style="font-size:0.8rem; color:var(--text-muted); margin:0 0 10px;">كتاب مرجعي شامل لأساسيات المجال</p>
-              <span style="font-size:0.75rem; color:var(--text-muted);"><i class="fas fa-layer-group"></i> مستوى: مبتدئ</span>
+        <!-- Coming soon body -->
+        <div style="padding:60px 24px 70px; text-align:center;">
+          <!-- Animated icon -->
+          <div style="position:relative; display:inline-block; margin-bottom:24px;">
+            <div style="width:90px; height:90px; border-radius:50%;
+                        background:linear-gradient(135deg,#e8f5e9,#c8e6c9);
+                        display:flex; align-items:center; justify-content:center;
+                        margin:0 auto; box-shadow:0 8px 32px rgba(46,94,46,0.18);">
+              <i class="fas fa-book-open" style="font-size:2.4rem; color:#2e5e2e;"></i>
             </div>
-            <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px;">
-              <div style="font-size:1.6rem; margin-bottom:10px;"><i class="fas fa-video" style="color:#1976d2;"></i></div>
-              <h4 style="margin:0 0 6px; color:var(--primary); font-size:0.9rem;">التواصل المؤسسي الحديث</h4>
-              <p style="font-size:0.8rem; color:var(--text-muted); margin:0 0 10px;">سلسلة محاضرات مسجلة من خبراء القطاع</p>
-              <span style="font-size:0.75rem; color:var(--text-muted);"><i class="fas fa-layer-group"></i> مستوى: متوسط</span>
+            <span style="position:absolute; top:-4px; left:-4px;
+                         background:var(--secondary); color:white;
+                         font-size:0.65rem; font-weight:800;
+                         padding:3px 8px; border-radius:20px; white-space:nowrap;
+                         box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+              قريباً
+            </span>
+          </div>
+
+          <h3 style="color:var(--primary); margin:0 0 10px; font-size:1.2rem;">
+            المصادر الأكاديمية في الطريق إليك!
+          </h3>
+          <p style="color:var(--text-muted); max-width:420px; margin:0 auto 28px; font-size:0.9rem; line-height:1.75;">
+            نعمل على تجميع أفضل المصادر والمراجع الأكاديمية لطلاب العلاقات العامة.
+            ستجد هنا كتباً، مقالات، محاضرات، ودراسات حالة متخصصة.
+          </p>
+
+          <!-- Feature previews -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; max-width:560px; margin:0 auto 32px; text-align:right;">
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; display:flex; align-items:center; gap:10px; opacity:0.65;">
+              <i class="fas fa-file-pdf" style="color:#e53935; font-size:1.3rem; flex-shrink:0;"></i>
+              <span style="font-size:0.83rem; font-weight:700; color:var(--text-main);">كتب ومراجع PDF</span>
             </div>
-            <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px;">
-              <div style="font-size:1.6rem; margin-bottom:10px;"><i class="fas fa-chart-bar" style="color:#388e3c;"></i></div>
-              <h4 style="margin:0 0 6px; color:var(--primary); font-size:0.9rem;">قياس أثر الحملات الإعلامية</h4>
-              <p style="font-size:0.8rem; color:var(--text-muted); margin:0 0 10px;">مقالات ودراسات حالة تطبيقية</p>
-              <span style="font-size:0.75rem; color:var(--text-muted);"><i class="fas fa-layer-group"></i> مستوى: متقدم</span>
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; display:flex; align-items:center; gap:10px; opacity:0.65;">
+              <i class="fas fa-video" style="color:#1976d2; font-size:1.3rem; flex-shrink:0;"></i>
+              <span style="font-size:0.83rem; font-weight:700; color:var(--text-main);">محاضرات مرئية</span>
             </div>
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; display:flex; align-items:center; gap:10px; opacity:0.65;">
+              <i class="fas fa-link" style="color:#388e3c; font-size:1.3rem; flex-shrink:0;"></i>
+              <span style="font-size:0.83rem; font-weight:700; color:var(--text-main);">روابط خارجية</span>
+            </div>
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; display:flex; align-items:center; gap:10px; opacity:0.65;">
+              <i class="fas fa-graduation-cap" style="color:#7b1fa2; font-size:1.3rem; flex-shrink:0;"></i>
+              <span style="font-size:0.83rem; font-weight:700; color:var(--text-main);">دراسات حالة</span>
+            </div>
+          </div>
+
+          <!-- Notify me -->
+          <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(46,94,46,0.08); border:1.5px solid #a5d6a7; border-radius:12px; padding:10px 18px; font-size:0.84rem; color:#2e5e2e; font-weight:700;">
+            <i class="fas fa-bell" style="color:#2e7d32;"></i>
+            سيتم إشعارك فور إطلاق هذا القسم
           </div>
         </div>
       </div>
@@ -5575,10 +6460,148 @@
 
     <!-- ===== FAQ ===== -->
     <div id="faq-view" class="view-section container" style="max-width:760px;">
-      <div class="card section-view-card" style="padding:32px 28px;">
-        <h2 style="color:var(--primary); margin:0 0 8px;"><i class="fas fa-question-circle" style="color:var(--secondary);"></i> الأسئلة الشائعة</h2>
-        <p style="color:var(--text-muted); margin:0 0 24px;">كل ما تريد معرفته عن منصة صيت</p>
-        <div id="faq-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+      <div class="card section-view-card" style="padding:0; overflow:hidden;">
+        <!-- Header -->
+        <div style="padding:22px 24px; background:linear-gradient(135deg,var(--primary),#1e3a5c); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h2 style="color:white; margin:0 0 3px; font-size:1.1rem;">
+              <i class="fas fa-question-circle" style="color:var(--secondary);"></i> الأسئلة الشائعة
+            </h2>
+            <p style="color:rgba(255,255,255,0.72); margin:0; font-size:0.82rem;">كل ما تريد معرفته عن منصة صيت</p>
+          </div>
+          <button id="btn-add-faq" class="btn" style="display:none; width:auto; padding:8px 16px; font-size:0.84rem; background:rgba(255,255,255,0.18); color:white; border:1.5px solid rgba(255,255,255,0.35); border-radius:10px;"
+            onclick="document.getElementById('faq-edit-form').dataset.editId='new'; document.getElementById('faq-edit-q').value=''; document.getElementById('faq-edit-a').value=''; document.getElementById('faq-list').prepend(document.getElementById('faq-edit-form')); document.getElementById('faq-edit-form').style.display='block'; document.getElementById('faq-edit-q').focus();">
+            <i class="fas fa-plus"></i> سؤال جديد
+          </button>
+        </div>
+
+        <!-- Inline edit form (hidden, moved around DOM) -->
+        <div id="faq-edit-form" style="display:none; padding:16px; background:var(--bg-body); border:2px solid var(--secondary); border-radius:0; margin:0;">
+          <div style="font-size:0.8rem; font-weight:700; color:var(--secondary); margin-bottom:8px;">
+            <i class="fas fa-pen"></i> تعديل / إضافة سؤال
+          </div>
+          <input type="text" id="faq-edit-q" class="input-field" placeholder="السؤال..." style="margin:0 0 8px; font-size:0.9rem;">
+          <textarea id="faq-edit-a" class="input-field" rows="3" placeholder="الجواب..." style="margin:0 0 10px; font-size:0.87rem;"></textarea>
+          <div style="display:flex; gap:8px; justify-content:flex-end;">
+            <button class="btn btn-text" style="width:auto; padding:7px 14px; font-size:0.85rem;"
+              onclick="document.getElementById('faq-edit-form').style.display='none';">إلغاء</button>
+            <button class="btn btn-primary" style="width:auto; padding:7px 18px; font-size:0.85rem;" onclick="saveFaqEdit()">
+              <i class="fas fa-save"></i> حفظ
+            </button>
+          </div>
+        </div>
+
+        <!-- List -->
+        <div id="faq-list" style="padding:16px; display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ===== Talent Search (للشركات) ===== -->
+    <div id="talent-view" class="view-section container" style="max-width:860px;">
+      <div class="card section-view-card" style="padding:0; overflow:hidden; margin-bottom:16px;">
+        <!-- Header -->
+        <div style="padding:20px 22px; background:linear-gradient(135deg,#1a3a6c,#2e5cb8);">
+          <h2 style="color:white; margin:0 0 3px; font-size:1.1rem;"><i class="fas fa-binoculars" style="color:#ffd700;"></i> بحث عن المواهب</h2>
+          <p style="color:rgba(255,255,255,0.72); margin:0; font-size:0.82rem;">ابحث عن طلاب وخريجين بمواصفات محددة</p>
+        </div>
+        <!-- Search bar -->
+        <div style="padding:14px 16px; background:var(--surface); border-bottom:1px solid var(--border);">
+          <div style="position:relative; margin-bottom:10px;">
+            <i class="fas fa-search" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;font-size:0.85rem;"></i>
+            <input type="text" id="talent-search-text" class="talent-search-input"
+              placeholder="ابحث بالاسم أو المهارة أو التخصص أو السيرة..."
+              oninput="runTalentSearch()" style="width:100%;padding-right:40px;">
+          </div>
+          <!-- Filter row -->
+          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+            <select id="talent-filter-role" class="talent-filter-select" onchange="runTalentSearch()">
+              <option value="">👥 الكل</option>
+              <option value="student">🎓 طلاب</option>
+              <option value="graduate">🏆 خريجون</option>
+            </select>
+            <select id="talent-filter-ws" class="talent-filter-select" onchange="runTalentSearch()">
+              <option value="">🔘 أي حالة</option>
+              <option value="available">🟢 متاح للعمل</option>
+              <option value="open">🔵 منفتح على الفرص</option>
+              <option value="training">🟠 في تدريب</option>
+            </select>
+            <select id="talent-filter-sort" class="talent-filter-select" onchange="runTalentSearch()">
+              <option value="skills">ترتيب: المهارات</option>
+              <option value="name">ترتيب: الاسم</option>
+            </select>
+            <button onclick="resetTalentFilters()" class="btn btn-text" style="width:auto;padding:6px 12px;font-size:0.8rem;border:1.5px solid var(--border);border-radius:10px;">
+              <i class="fas fa-undo"></i> إعادة
+            </button>
+          </div>
+        </div>
+        <!-- Skill chips -->
+        <div style="padding:10px 16px 6px; border-bottom:1px solid var(--border); overflow-x:auto; white-space:nowrap; scrollbar-width:none;">
+          <span style="font-size:0.75rem;color:var(--text-muted);margin-left:8px;">المهارات الشائعة:</span>
+          <span id="talent-skill-chips"></span>
+        </div>
+        <!-- Stats -->
+        <div style="padding:8px 16px; background:var(--bg-body); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+          <span id="talent-stats" style="font-size:0.8rem;color:var(--text-muted);"></span>
+          <span id="talent-active-filters" style="font-size:0.75rem;color:var(--primary);font-weight:700;"></span>
+        </div>
+        <!-- Results -->
+        <div id="talent-results" style="padding:12px 16px;"></div>
+      </div>
+    </div>
+
+    <!-- ===== Research / أبحاث علمية ===== -->
+    <div id="research-view" class="view-section container" style="max-width:860px;">
+      <div class="card section-view-card" style="padding:0; overflow:hidden;">
+        <!-- Header -->
+        <div style="padding:20px 22px; background:linear-gradient(135deg,#1b3a2d,#2e6b4f); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h2 style="color:white; margin:0 0 3px; font-size:1.1rem;"><i class="fas fa-flask" style="color:#7dffc3;"></i> الأبحاث العلمية</h2>
+            <p style="color:rgba(255,255,255,0.72); margin:0; font-size:0.82rem;">أبحاث ومشاريع أعضاء القسم — أضف بحثك عبر رابط Google Drive</p>
+          </div>
+          <button id="btn-add-research" class="btn" style="display:none; width:auto; padding:8px 16px; font-size:0.85rem; background:rgba(255,255,255,0.18); color:white; border:1.5px solid rgba(255,255,255,0.35); border-radius:10px;"
+            onclick="document.getElementById('add-research-form').style.display='block'; this.style.display='none'">
+            <i class="fas fa-plus"></i> أضف بحثاً
+          </button>
+        </div>
+        <!-- Add form -->
+        <div id="add-research-form" style="display:none; padding:16px; background:var(--bg-body); border-bottom:1px solid var(--border);">
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <input type="text" id="res-title" class="input-field" placeholder="عنوان البحث *" style="margin:0;">
+            <input type="text" id="res-authors" class="input-field" placeholder="أسماء المؤلفين * (مثال: أحمد محمد، سارة علي)" style="margin:0;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <input type="text" id="res-year" class="input-field" placeholder="سنة النشر" style="margin:0;">
+              <input type="text" id="res-journal" class="input-field" placeholder="المجلة / المؤتمر" style="margin:0;">
+            </div>
+            <textarea id="res-abstract" class="input-field" rows="2" placeholder="ملخص البحث (اختياري)..." style="margin:0;"></textarea>
+            <!-- Google Drive link -->
+            <div style="background:#f1f8e9; border:1.5px solid #a5d6a7; border-radius:12px; padding:12px 14px; display:flex; align-items:flex-start; gap:10px;">
+              <i class="fab fa-google-drive" style="color:#34a853; font-size:1.3rem; flex-shrink:0; margin-top:2px;"></i>
+              <div style="flex:1;">
+                <div style="font-weight:700; color:#2e7d32; font-size:0.85rem; margin-bottom:4px;">رابط Google Drive</div>
+                <input type="url" id="res-drive" class="input-field"
+                  placeholder="https://drive.google.com/file/d/..." style="margin:0; font-size:0.85rem;">
+                <div style="font-size:0.74rem; color:#555; margin-top:5px;">
+                  <i class="fas fa-info-circle"></i>
+                  تأكد أن الرابط مشاركاً عاماً: الملف ← مشاركة ← أي شخص لديه الرابط
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px;">
+            <button class="btn btn-text" style="width:auto;" onclick="document.getElementById('add-research-form').style.display='none'; document.getElementById('btn-add-research').style.display='inline-flex';">إلغاء</button>
+            <button class="btn btn-primary" style="width:auto; padding:9px 22px;" onclick="saveResearch()">
+              <i class="fas fa-upload"></i> نشر البحث
+            </button>
+          </div>
+        </div>
+        <!-- Search + filter bar -->
+        <div style="padding:12px 16px; border-bottom:1px solid var(--border); display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <input type="text" id="res-search" class="talent-search-input" placeholder="ابحث في الأبحاث..." oninput="filterResearch(this.value)" style="flex:1; min-width:160px;">
+          <select id="res-filter-year" class="talent-filter-select" onchange="filterResearch(document.getElementById('res-search').value)" style="min-width:90px;">
+            <option value="">كل السنوات</option>
+          </select>
+        </div>
+        <div id="research-list" style="padding:14px 16px; display:flex; flex-direction:column; gap:10px; min-height:80px;"></div>
       </div>
     </div>
 
