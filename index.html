@@ -2008,41 +2008,6 @@
       pre, code { white-space: pre-wrap; word-break: break-word; }
       iframe { max-width: 100%; }
 
-      /* ===== Talent Search (للشركات) ===== */
-      .talent-card {
-        display: flex; align-items: center; gap: 14px;
-        padding: 14px 16px; border-radius: 14px;
-        border: 1px solid var(--border); background: var(--surface);
-        margin-bottom: 10px; transition: 0.2s; cursor: pointer;
-      }
-      .talent-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(32,59,95,0.1); transform: translateY(-1px); }
-      .talent-card img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0; }
-      .talent-card-info { flex: 1; min-width: 0; }
-      .talent-card-name { font-weight: 700; color: var(--primary); font-size: 0.95rem; margin-bottom: 2px; }
-      .talent-card-meta { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 5px; }
-      .talent-card-skills { display: flex; flex-wrap: wrap; gap: 4px; }
-      .talent-skill-pill { background: #e3f2fd; color: #1565c0; border-radius: 20px; padding: 2px 9px; font-size: 0.7rem; font-weight: 600; }
-      .talent-filter-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
-      .talent-filter-select {
-        padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 10px;
-        font-family: "Cairo", sans-serif; font-size: 0.85rem; background: var(--surface);
-        color: var(--text-main); cursor: pointer; outline: none; transition: 0.15s;
-      }
-      .talent-filter-select:focus { border-color: var(--primary); }
-      .talent-search-input {
-        flex: 1; min-width: 180px; padding: 9px 16px;
-        border: 1.5px solid var(--border); border-radius: 10px;
-        font-family: "Cairo", sans-serif; font-size: 0.9rem;
-        background: var(--surface); color: var(--text-main); outline: none; transition: 0.15s;
-      }
-      .talent-search-input:focus { border-color: var(--primary); }
-      .talent-ws-available { color: #2e7d32; font-weight: 700; }
-      .talent-ws-training  { color: #e65100; }
-      .talent-ws-open      { color: #1565c0; }
-      [data-theme="dark"] .talent-card { background: #1a2535 !important; border-color: #2a3a50; }
-      [data-theme="dark"] .talent-filter-select { background: #1a2535; color: var(--text-main); border-color: #2a3a50; }
-      [data-theme="dark"] .talent-search-input  { background: #1a2535; color: var(--text-main); border-color: #2a3a50; }
-      [data-theme="dark"] .talent-skill-pill { background: #1e3560; color: #7ab3e8; }
 
       /* ===== Research Section ===== */
       .research-card {
@@ -2329,9 +2294,6 @@
       </div>
       <div class="hm-item" onclick="closeHamburger(); navigate('faq-view')">
         <i class="fas fa-question-circle"></i> أسئلة شائعة
-      </div>
-      <div class="hm-item company-only" onclick="closeHamburger(); navigate('talent-view')" style="display:none;">
-        <i class="fas fa-binoculars" style="color:#2e5cb8;"></i> بحث عن مواهب
       </div>
       <div class="hm-item" onclick="closeHamburger(); navigate('research-view')">
         <i class="fas fa-flask" style="color:#2e6b4f;"></i> الأبحاث العلمية
@@ -3282,7 +3244,6 @@
         if (viewId === "faq-view") loadFAQ();
         if (viewId === "achievements-view") loadAchievements();
         if (viewId === "success-view") loadStories();
-        if (viewId === "talent-view") initTalentSearch();
         if (viewId === "research-view") loadResearch();
         document.getElementById("notif-dropdown")?.classList.remove("show");
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -6069,152 +6030,7 @@
         }
       };
 
-      // ===== Talent Search (للشركات) =====
-      let _talentSkillFilter = '';
 
-      window.resetTalentFilters = function() {
-        _talentSkillFilter = '';
-        ['talent-search-text','talent-filter-role','talent-filter-ws'].forEach(id => {
-          const el = document.getElementById(id); if (el) el.value = '';
-        });
-        const sortEl = document.getElementById('talent-filter-sort');
-        if (sortEl) sortEl.value = 'skills';
-        document.querySelectorAll('#talent-skill-chips .sr-chip').forEach(b => b.classList.remove('active'));
-        runTalentSearch();
-      };
-
-      window.initTalentSearch = function() {
-        const skillsCount = {};
-        allUsersCache.forEach(u => {
-          if (u.role !== 'student' && u.role !== 'graduate') return;
-          (u.skills||'').split(',').forEach(s => {
-            const sk = s.trim();
-            if (sk) skillsCount[sk] = (skillsCount[sk]||0) + 1;
-          });
-        });
-        const topSkills = Object.entries(skillsCount).sort((a,b)=>b[1]-a[1]).slice(0,15).map(e=>e[0]);
-        const chipsEl = document.getElementById('talent-skill-chips');
-        if (chipsEl) {
-          chipsEl.innerHTML = topSkills.map(sk =>
-            `<button class="sr-chip" style="margin:2px 4px 2px 0;display:inline-flex;"
-              onclick="setTalentSkill('${sk.replace(/'/g,"\\'")}',this)">${sk}</button>`
-          ).join('');
-        }
-        runTalentSearch();
-      };
-
-      window.setTalentSkill = function(skill, btn) {
-        _talentSkillFilter = (_talentSkillFilter === skill) ? '' : skill;
-        document.querySelectorAll('#talent-skill-chips .sr-chip').forEach(b => b.classList.remove('active'));
-        if (_talentSkillFilter) btn.classList.add('active');
-        runTalentSearch();
-      };
-
-      window.runTalentSearch = function() {
-        const q       = (document.getElementById('talent-search-text')?.value||'').trim().toLowerCase();
-        const role    = document.getElementById('talent-filter-role')?.value  || '';
-        const ws      = document.getElementById('talent-filter-ws')?.value    || '';
-        const sort    = document.getElementById('talent-filter-sort')?.value  || 'skills';
-        const resEl   = document.getElementById('talent-results');
-        const statsEl = document.getElementById('talent-stats');
-        const filtersEl= document.getElementById('talent-active-filters');
-        if (!resEl) return;
-
-        const wsColors = { available:'#2e7d32', training:'#e65100', open:'#1565c0' };
-        const wsLabels = { available:'متاح للعمل', training:'في تدريب', open:'منفتح على الفرص' };
-        const wsIcons  = { available:'🟢', training:'🟠', open:'🔵' };
-        const roleLabel= { student:'طالب', graduate:'خريج' };
-
-        let results = allUsersCache.filter(u => {
-          if (u.role !== 'student' && u.role !== 'graduate') return false;
-          if (role && u.role !== role) return false;
-          if (ws   && u.workStatus !== ws) return false;
-          if (_talentSkillFilter) {
-            if (!(u.skills||'').toLowerCase().includes(_talentSkillFilter.toLowerCase())) return false;
-          }
-          if (!q) return true;
-          return u.name?.toLowerCase().includes(q) ||
-                 (u.skills||'').toLowerCase().includes(q) ||
-                 (u.bio||'').toLowerCase().includes(q) ||
-                 (u.education||'').toLowerCase().includes(q) ||
-                 (u.experience||'').toLowerCase().includes(q);
-        });
-
-        if (sort === 'name') {
-          results.sort((a,b) => (a.name||'').localeCompare(b.name||'', 'ar'));
-        } else {
-          results.sort((a,b) => {
-            if (b.workStatus==='available' && a.workStatus!=='available') return 1;
-            if (a.workStatus==='available' && b.workStatus!=='available') return -1;
-            const sa = (a.skills||'').split(',').filter(s=>s.trim()).length;
-            const sb = (b.skills||'').split(',').filter(s=>s.trim()).length;
-            return sb - sa;
-          });
-        }
-
-        const activeF = [];
-        if (role) activeF.push(roleLabel[role]);
-        if (ws)   activeF.push(wsLabels[ws]);
-        if (_talentSkillFilter) activeF.push(_talentSkillFilter);
-        if (filtersEl) filtersEl.textContent = activeF.length ? 'فلاتر: '+activeF.join(' · ') : '';
-        if (statsEl) statsEl.textContent = results.length
-          ? `${results.length} شخص · ${results.filter(u=>u.workStatus==='available').length} متاح للعمل`
-          : 'لا توجد نتائج';
-
-        if (!results.length) {
-          resEl.innerHTML = `<div style="text-align:center;padding:50px 20px;color:var(--text-muted);">
-            <i class="fas fa-search" style="font-size:3rem;opacity:0.15;display:block;margin-bottom:14px;"></i>
-            <strong>لا توجد نتائج</strong>
-            <button onclick="resetTalentFilters()" class="btn btn-outline"
-              style="width:auto;margin-top:14px;padding:8px 18px;font-size:0.85rem;display:block;margin-left:auto;margin-right:auto;">
-              <i class="fas fa-undo"></i> إعادة ضبط الفلاتر
-            </button>
-          </div>`;
-          return;
-        }
-
-        function escRx5(s){ return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,'\\$&'); }
-
-        resEl.innerHTML = results.map(u => {
-          const av = getAvatar(u.name, u.avatarUrl);
-          const hlName = q
-            ? u.name.replace(new RegExp('('+escRx5(q)+')','gi'),
-                '<mark style="background:#fff3cd;border-radius:2px;padding:0 1px;">$1</mark>')
-            : u.name;
-          const skillsArr = (u.skills||'').split(',').map(s=>s.trim()).filter(Boolean);
-          const skillTags = skillsArr.slice(0,5).map(s => {
-            const isMatch = _talentSkillFilter && s.toLowerCase()===_talentSkillFilter.toLowerCase();
-            return `<span class="talent-skill-pill"
-              style="${isMatch?'background:#fff3cd;color:#b45309;border:1px solid #f59e0b;':''}">${s}</span>`;
-          }).join('');
-          const more = skillsArr.length>5
-            ? `<span class="talent-skill-pill" style="background:var(--bg-body);color:var(--text-muted);">+${skillsArr.length-5}</span>` : '';
-          const wsColor = wsColors[u.workStatus]||'var(--text-muted)';
-          const wsIcon  = wsIcons[u.workStatus] ||'';
-          const wsText  = wsLabels[u.workStatus]||'';
-          const safeName= (u.name||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-          const safeAv  = av.replace(/'/g,"\\'");
-          return `<div class="talent-card" onclick="viewProfile('${u.uid}')">
-            <img src="${av}" alt="${u.name}" loading="lazy">
-            <div class="talent-card-info">
-              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                <span class="talent-card-name">${hlName}</span>
-                ${wsText?`<span style="font-size:0.7rem;color:${wsColor};font-weight:700;">${wsIcon} ${wsText}</span>`:''}
-              </div>
-              <div class="talent-card-meta">
-                ${roleLabel[u.role]||u.role}${u.education?' &nbsp;·&nbsp; '+u.education.slice(0,35):''}
-              </div>
-              ${u.bio?`<div style="font-size:0.76rem;color:var(--text-muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${u.bio.slice(0,55)}${u.bio.length>55?'…':''}</div>`:''}
-              <div class="talent-card-skills" style="margin-top:5px;">${skillTags}${more}</div>
-            </div>
-            <button class="btn btn-outline"
-              style="flex-shrink:0;padding:7px 11px;font-size:0.82rem;width:auto;align-self:flex-start;"
-              onclick="event.stopPropagation();navigate('chat-view');openChat('${u.uid}','${safeName}','${safeAv}')">
-              <i class="fas fa-paper-plane"></i>
-            </button>
-          </div>`;
-        }).join('');
-      }
       // ===== Research (أبحاث علمية) =====
       let _allResearch = []; // cache for filtering
 
@@ -6674,59 +6490,6 @@
 
         <!-- List -->
         <div id="faq-list" style="padding:16px; display:flex; flex-direction:column; gap:8px;"></div>
-      </div>
-    </div>
-
-    <!-- ===== Talent Search (للشركات) ===== -->
-    <div id="talent-view" class="view-section container" style="max-width:860px;">
-      <div class="card section-view-card" style="padding:0; overflow:hidden; margin-bottom:16px;">
-        <!-- Header -->
-        <div style="padding:20px 22px; background:linear-gradient(135deg,#1a3a6c,#2e5cb8);">
-          <h2 style="color:white; margin:0 0 3px; font-size:1.1rem;"><i class="fas fa-binoculars" style="color:#ffd700;"></i> بحث عن المواهب</h2>
-          <p style="color:rgba(255,255,255,0.72); margin:0; font-size:0.82rem;">ابحث عن طلاب وخريجين بمواصفات محددة</p>
-        </div>
-        <!-- Search bar -->
-        <div style="padding:14px 16px; background:var(--surface); border-bottom:1px solid var(--border);">
-          <div style="position:relative; margin-bottom:10px;">
-            <i class="fas fa-search" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;font-size:0.85rem;"></i>
-            <input type="text" id="talent-search-text" class="talent-search-input"
-              placeholder="ابحث بالاسم أو المهارة أو التخصص أو السيرة..."
-              oninput="runTalentSearch()" style="width:100%;padding-right:40px;">
-          </div>
-          <!-- Filter row -->
-          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-            <select id="talent-filter-role" class="talent-filter-select" onchange="runTalentSearch()">
-              <option value="">👥 الكل</option>
-              <option value="student">🎓 طلاب</option>
-              <option value="graduate">🏆 خريجون</option>
-            </select>
-            <select id="talent-filter-ws" class="talent-filter-select" onchange="runTalentSearch()">
-              <option value="">🔘 أي حالة</option>
-              <option value="available">🟢 متاح للعمل</option>
-              <option value="open">🔵 منفتح على الفرص</option>
-              <option value="training">🟠 في تدريب</option>
-            </select>
-            <select id="talent-filter-sort" class="talent-filter-select" onchange="runTalentSearch()">
-              <option value="skills">ترتيب: المهارات</option>
-              <option value="name">ترتيب: الاسم</option>
-            </select>
-            <button onclick="resetTalentFilters()" class="btn btn-text" style="width:auto;padding:6px 12px;font-size:0.8rem;border:1.5px solid var(--border);border-radius:10px;">
-              <i class="fas fa-undo"></i> إعادة
-            </button>
-          </div>
-        </div>
-        <!-- Skill chips -->
-        <div style="padding:10px 16px 6px; border-bottom:1px solid var(--border); overflow-x:auto; white-space:nowrap; scrollbar-width:none;">
-          <span style="font-size:0.75rem;color:var(--text-muted);margin-left:8px;">المهارات الشائعة:</span>
-          <span id="talent-skill-chips"></span>
-        </div>
-        <!-- Stats -->
-        <div style="padding:8px 16px; background:var(--bg-body); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
-          <span id="talent-stats" style="font-size:0.8rem;color:var(--text-muted);"></span>
-          <span id="talent-active-filters" style="font-size:0.75rem;color:var(--primary);font-weight:700;"></span>
-        </div>
-        <!-- Results -->
-        <div id="talent-results" style="padding:12px 16px;"></div>
       </div>
     </div>
 
